@@ -1,0 +1,156 @@
+/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/distributed/distributed_helper.py:163: UserWarning: Torch distributed could not be initialized (missing environment configuration)
+  warnings.warn(
+/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/plugins/evaluation.py:94: UserWarning: No loggers specified, metrics will not be logged
+  warnings.warn("No loggers specified, metrics will not be logged")
+Running gem on permuted-mnist with mlp and None
+[Rank 0/1] using device cuda:0
+train_mb_size: 32
+Traceback (most recent call last):
+  File "/home/betekmen/sgem/src/main.py", line 249, in <module>
+    run()
+  File "/home/betekmen/sgem/src/main.py", line 240, in run
+    run_experiment(
+  File "/home/betekmen/sgem/src/main.py", line 182, in run_experiment
+    runner.run()
+  File "/home/betekmen/sgem/src/eval/benchmarking.py", line 131, in run
+    results = train_and_evaluate(
+  File "/home/betekmen/sgem/src/util/util.py", line 204, in train_and_evaluate
+    strategy.eval(test_stream)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/templates/base_sgd.py", line 228, in eval
+    super().eval(exp_list, **kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/templates/base.py", line 212, in eval
+    self._eval_exp(**kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/templates/base_sgd.py", line 232, in _eval_exp
+    self.eval_epoch(**kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/templates/base_sgd.py", line 278, in eval_epoch
+    self._after_eval_iteration(**kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/templates/base_sgd.py", line 563, in _after_eval_iteration
+    trigger_plugins(self, "after_eval_iteration", **kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/utils.py", line 75, in trigger_plugins
+    getattr(p, event)(strategy, **kwargs)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/plugins/evaluation.py", line 222, in fun
+    return self._update_metrics_and_loggers(strat, item)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/training/plugins/evaluation.py", line 160, in _update_metrics_and_loggers
+    metric_result = getattr(metric, callback)(strategy)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/evaluation/metric_definitions.py", line 344, in after_eval_iteration
+    self.update(strategy)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/evaluation/metrics/disk_usage.py", line 140, in update
+    self._metric.update()
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/evaluation/metrics/disk_usage.py", line 65, in update
+    dirs_size += self.get_dir_size(directory)
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/evaluation/metrics/disk_usage.py", line 104, in get_dir_size
+    subprocess.check_output(["du", "-sb", path])
+  File "/usr/lib/python3.10/subprocess.py", line 421, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1141, in communicate
+    stdout = self.stdout.read()
+KeyboardInterrupt
+
+> python3 src/main.py --strategy gem --benchmark permuted-mnist --model mlp
+Traceback (most recent call last):
+  File "/home/betekmen/sgem/./src/run_experiments.py", line 81, in <module>
+    main()
+  File "/home/betekmen/sgem/./src/run_experiments.py", line 78, in main
+    subprocess.run(cmd, check=True)
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1146, in communicate
+    self.wait()
+  File "/usr/lib/python3.10/subprocess.py", line 1209, in wait
+    return self._wait(timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1959, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/usr/lib/python3.10/subprocess.py", line 1917, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/home/betekmen/sgem/src/main.py", line 1, in <module>
+    from util import parse_args
+  File "/home/betekmen/sgem/src/util/__init__.py", line 1, in <module>
+    from .util import *
+  File "/home/betekmen/sgem/src/util/util.py", line 6, in <module>
+    from avalanche.training.plugins import EvaluationPlugin
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/__init__.py", line 1, in <module>
+    from avalanche import benchmarks
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/benchmarks/__init__.py", line 11, in <module>
+    from .scenarios import *
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/benchmarks/scenarios/__init__.py", line 1, in <module>
+    from .generic_scenario import *
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/benchmarks/scenarios/generic_scenario.py", line 35, in <module>
+    from avalanche.benchmarks.utils.dataset_utils import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/benchmarks/utils/__init__.py", line 1, in <module>
+    from .transforms import *
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/avalanche/benchmarks/utils/transforms.py", line 20, in <module>
+    from torchvision.transforms import Compose
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torchvision/__init__.py", line 10, in <module>
+    from torchvision import _meta_registrations, datasets, io, models, ops, transforms, utils  # usort:skip
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torchvision/models/__init__.py", line 2, in <module>
+    from .convnext import *
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torchvision/models/convnext.py", line 8, in <module>
+    from ..ops.misc import Conv2dNormActivation, Permute
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torchvision/ops/__init__.py", line 1, in <module>
+    from ._register_onnx_ops import _register_custom_op
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torchvision/ops/_register_onnx_ops.py", line 5, in <module>
+    from torch.onnx import symbolic_opset11 as opset11
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/__init__.py", line 68, in <module>
+    from .utils import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/utils.py", line 26, in <module>
+    from torch.onnx._internal import diagnostics, jit_utils, onnx_proto_utils, registration
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/__init__.py", line 1, in <module>
+    from ._diagnostic import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/_diagnostic.py", line 11, in <module>
+    from torch.onnx._internal.diagnostics import infra
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/__init__.py", line 1, in <module>
+    from ._infra import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/_infra.py", line 11, in <module>
+    from torch.onnx._internal.diagnostics.infra import formatter, sarif
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/formatter.py", line 10, in <module>
+    from torch.onnx._internal.diagnostics.infra import sarif
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/__init__.py", line 14, in <module>
+    from torch.onnx._internal.diagnostics.infra.sarif._code_flow import CodeFlow
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/_code_flow.py", line 9, in <module>
+    from torch.onnx._internal.diagnostics.infra.sarif import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/_thread_flow.py", line 9, in <module>
+    from torch.onnx._internal.diagnostics.infra.sarif import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/_thread_flow_location.py", line 9, in <module>
+    from torch.onnx._internal.diagnostics.infra.sarif import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/_location.py", line 9, in <module>
+    from torch.onnx._internal.diagnostics.infra.sarif import (
+  File "/home/betekmen/sgem/.venv/lib/python3.10/site-packages/torch/onnx/_internal/diagnostics/infra/sarif/_location_relationship.py", line 13, in <module>
+    class LocationRelationship(object):
+  File "/usr/lib/python3.10/dataclasses.py", line 1184, in dataclass
+    return wrap(cls)
+  File "/usr/lib/python3.10/dataclasses.py", line 1175, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+  File "/usr/lib/python3.10/dataclasses.py", line 1024, in _process_class
+    _init_fn(all_init_fields,
+  File "/usr/lib/python3.10/dataclasses.py", line 579, in _init_fn
+    return _create_fn('__init__',
+  File "/usr/lib/python3.10/dataclasses.py", line 432, in _create_fn
+    exec(txt, globals, ns)
+  File "<string>", line 1, in <module>
+KeyboardInterrupt
+
+> python3 src/main.py --strategy gem --benchmark permuted-mnist --model mlp
+Traceback (most recent call last):
+  File "/home/betekmen/sgem/./src/run_experiments.py", line 81, in <module>
+    main()
+  File "/home/betekmen/sgem/./src/run_experiments.py", line 78, in main
+    subprocess.run(cmd, check=True)
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1146, in communicate
+    self.wait()
+  File "/usr/lib/python3.10/subprocess.py", line 1209, in wait
+    return self._wait(timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1959, in _wait
+    (pid, sts) = self._try_wait(0)
+  File "/usr/lib/python3.10/subprocess.py", line 1917, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+KeyboardInterrupt
