@@ -1,7 +1,7 @@
 odca
 
 refactor procedure:
-0. inherit from base-gem or igem?
+0. inherit from base-gem or igem?, pass additional params into super init
 1. call function using core.time_project
 2. add modifications (n_iter, blr, warm)
 

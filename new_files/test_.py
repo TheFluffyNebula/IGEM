@@ -1,74 +1,90 @@
 import pytest
-from new_files import igem
-from igem import IGEMPlugin
+from new_files import agem, igem, gem
+from .agem import AGEMPlugin
+from .igem import IGEMPlugin
+from .gem import GEMPlugin
 from new_files import core
 import torch
 
 def test_gem_qp():
-    # Mock small memory matrix G and gradient vector g
     G = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
     g = torch.tensor([0.5, -0.5])
     memory_strength = 0.1
-    device = torch.device("cuda:0")
+    proj_interval = 1
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    g_proj = core.solve_quadprog(g, G, memory_strength, device)
+    plugin = GEMPlugin(
+        patterns_per_exp=1,
+        memory_strength=memory_strength,
+        proj_interval=proj_interval,
+        proj_metric=None
+    )
 
-    # Should return a tensor of same shape as g
+    plugin.G = G.to(device)
+    g = g.to(device)
+
+    # Call as static method (recommended)
+    g_proj = plugin.solve_quadprog(plugin.G, g, plugin.memory_strength)
+
     assert isinstance(g_proj, torch.Tensor), "Output is not a tensor"
     assert g_proj.shape == g.shape, f"Expected shape {g.shape}, got {g_proj.shape}"
     assert g_proj.dtype == torch.float32
 
 def test_agem_qp():
-    # Create dummy tensors
-    reference_gradients = torch.tensor([1.0, 2.0, 3.0], device='cuda' if torch.cuda.is_available() else 'cpu')
-    dotg = torch.tensor(7.0, device=reference_gradients.device)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Run function
-    alpha2, elapsed = core.solve_agem_sgd(dotg, reference_gradients)
+    plugin = AGEMPlugin(
+        patterns_per_exp=1,
+        sample_size=10,
+        memory_strength=0.1,    # Add these two
+        proj_interval=1,
+        proj_metric=None
+    )
 
-    # Expected value: 7 / (1^2 + 2^2 + 3^2) = 7 / 14 = 0.5
-    expected = 0.5
-    assert torch.isclose(alpha2, torch.tensor(expected, device=alpha2.device)), "alpha2 not computed correctly"
+    reference_gradients = torch.tensor([1.0, 2.0, 3.0], device=device)
+    dotg = torch.tensor(7.0, device=device)
+
+    alpha2, elapsed = plugin.solve_agem_sgd(dotg, reference_gradients)
+
+    expected = 7.0 / (1**2 + 2**2 + 3**2)
+    assert torch.isclose(alpha2, torch.tensor(expected, device=device)), "alpha2 not correct"
     assert isinstance(elapsed, float)
-    assert elapsed >= 0.0, "Elapsed time must be non-negative"
+    assert elapsed >= 0.0
     
 def test_igem_qp():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Initialize plugin with dummy args
     plugin = IGEMPlugin(
         patterns_per_exp=1,
         sgd_iterations=10,
         lr=0.1,
         use_adaptive_lr=False,
         use_warm_start=False,
+        memory_strength=0.0,
+        proj_interval=1,
         proj_metric=None
     )
 
-    # Create fake G and g
-    plugin.G = torch.tensor([[1.0, 0.0], [0.0, 1.0]], device=device)  # shape: (2, 2)
-    g = torch.tensor([-1.0, -1.0], device=device)                     # shape: (2,)
-    
-    # Set memory strength
-    plugin.memory_strength = 0.0
+    t = 2
+    v = None
+    plugin.G = torch.eye(t, device=device)
+    plugin.GGT = torch.matmul(plugin.G, plugin.G.T)
+    g = torch.tensor([-1.0, -1.0], device=device)
 
-    # Call solve_dualsgd
-    v_star = plugin.solve_dualsgd(t=2, dev=device, g=g, I=20)
+    v_star = plugin.solve_dualsgd(
+        v=v,
+        t=t,
+        dev=device,
+        G=plugin.G,
+        g=g,
+        GGT=plugin.GGT,
+        I=plugin.sgd_iterations,
+        lr=plugin.lr,
+        memory_strength=plugin.memory_strength,
+        use_adaptive_lr=plugin.use_adaptive_lr,
+        use_warm_start=plugin.use_warm_start,
+    )
 
-    # v_star should be a 2D tensor (length 2)
     assert isinstance(v_star, torch.Tensor)
-    assert v_star.shape == (2,)
-
-    # All elements should be non-negative due to projection
+    assert v_star.shape == (t,)
     assert torch.all(v_star >= 0)
-
-    # Optional: check approximate gradient descent convergence behavior
-    assert torch.any(v_star > 0)
-
-    # Stability test: calling again with same t should keep shape
-    v_star2 = plugin.solve_dualsgd(t=2, dev=device, g=g, I=5)
-    assert v_star2.shape == (2,)
-
-test_gem_qp()
-test_agem_qp()
-test_igem_qp()

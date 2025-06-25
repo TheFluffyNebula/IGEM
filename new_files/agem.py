@@ -13,9 +13,9 @@ from avalanche.benchmarks.utils.data_loader import (
 from avalanche.models import avalanche_forward
 from avalanche.training.plugins.strategy_plugin import SupervisedPlugin
 
-from base_gem import BaseGEMPlugin
+from .base_gem import BaseGEMPlugin
 from . import core
-class AGEMPlusPlugin(BaseGEMPlugin):
+class AGEMPlugin(BaseGEMPlugin):
     """Average Gradient Episodic Memory Plugin.
 
     AGEM projects the gradient on the current minibatch by using an external
@@ -25,15 +25,15 @@ class AGEMPlusPlugin(BaseGEMPlugin):
     This plugin does not use task identities.
     """
 
-    def __init__(self, patterns_per_exp: int, sample_size: int, proj_metric):
+    def __init__(self, patterns_per_exp: int, sample_size: int, memory_strength: float, proj_interval: int, proj_metric):
         """
-        :param patterns_per_experience: number of patterns per experience in the
+        :param patterns_per_exp: number of patterns per experience in the
             memory.
         :param sample_size: number of patterns in memory sample when computing
             reference gradient.
         """
 
-        super().__init__()
+        super().__init__(memory_strength=memory_strength, proj_interval=proj_interval)
 
         self.patterns_per_experience = int(patterns_per_exp)
         self.sample_size = int(sample_size)
@@ -98,7 +98,11 @@ class AGEMPlusPlugin(BaseGEMPlugin):
                 dotg = torch.dot(current_gradients, self.reference_gradients)
                 dotg = -1
                 if dotg < 0:
-                    alpha2, time_elapsed = core.time_projection(self, dotg, self.reference_gradients)
+                    alpha2, time_elapsed = core.time_projection(
+                        self.solve_agem_sgd, 
+                        dotg=dotg, 
+                        reference_gradients=self.reference_gradients
+                    )
                     self.proj_metric.elapsed += time_elapsed
                     grad_proj = current_gradients - self.reference_gradients * alpha2
 
@@ -148,7 +152,7 @@ class AGEMPlusPlugin(BaseGEMPlugin):
         )
         self.buffer_dliter = iter(self.buffer_dataloader)
     
-    def solve_agem_sgd(dotg: torch.Tensor, reference_gradients: torch.Tensor):
+    def solve_agem_sgd(self, dotg: torch.Tensor, reference_gradients: torch.Tensor):
         torch.cuda.synchronize()
         t0 = time.perf_counter()
         alpha2 = dotg / torch.dot(reference_gradients, reference_gradients)

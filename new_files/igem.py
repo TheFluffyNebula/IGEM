@@ -5,12 +5,12 @@ from torch.utils.data import DataLoader
 from avalanche.models import avalanche_forward
 from avalanche.training.plugins.strategy_plugin import SupervisedPlugin
 
-from base_gem import BaseGEMPlugin
+from .base_gem import BaseGEMPlugin
 from . import core
 class IGEMPlugin(BaseGEMPlugin):
 
     def __init__(self, *, patterns_per_exp: int, sgd_iterations: int, lr: float, 
-                 use_adaptive_lr: bool, use_warm_start: bool, proj_metric):
+                 use_adaptive_lr: bool, use_warm_start: bool, memory_strength: float, proj_interval: int, proj_metric):
         """
         :param patterns_per_experience: number of patterns per experience in the
             memory. (basically the number of samples per task)
@@ -18,7 +18,7 @@ class IGEMPlugin(BaseGEMPlugin):
             in order to favour backward transfer (gamma in original paper).
         """
 
-        super().__init__()
+        super().__init__(memory_strength=memory_strength, proj_interval=proj_interval)
 
         self.patterns_per_experience = int(patterns_per_exp)
         '''
@@ -135,7 +135,22 @@ class IGEMPlugin(BaseGEMPlugin):
             # v_star = self.solve_quadprog(g).to(strategy.device)
 
             # new code (approximation, faster)            print("Projecting")
-            v_star, time_elapsed = core.time_projection(self.solve_dualsgd, self, strategy.clock.train_exp_counter, strategy.device, g, self.sgd_iterations)
+            v_star, time_elapsed = core.time_projection(
+                self.solve_dualsgd,
+                v=self.v,
+                t=strategy.clock.train_exp_counter,
+                dev=strategy.device,
+                G=self.G,
+                g=g,
+                GGT=self.GGT,
+                I=self.sgd_iterations,
+                lr=self.lr,
+                memory_strength=self.memory_strength,
+                use_adaptive_lr=self.use_adaptive_lr,
+                use_warm_start=self.use_warm_start
+            )
+            # the warm init
+            self.v = v_star
             self.proj_metric.elapsed += time_elapsed
             # print("V STAR SHAPE:", v_star.shape)
             g_proj = torch.mv(self.G.T, v_star) + g
@@ -198,7 +213,7 @@ class IGEMPlugin(BaseGEMPlugin):
             tot += x.size(0)
     
     # t tasks, device dev, gradient g, iterations I
-    def solve_dualsgd(self, t, dev, g, I):
+    def solve_dualsgd(self, v, t, dev, G, g, GGT, I, lr, memory_strength, use_adaptive_lr, use_warm_start):
         '''
         theory: v* <- 0-vector
         gradF w/ respect to v: G * (transpose(G) * v) + G * g
@@ -207,25 +222,25 @@ class IGEMPlugin(BaseGEMPlugin):
         '''
 
         # t may be exclusive, which means we would actually use t instead of t-1.
-        if self.v is None or self.v.shape[0] != t:
-            self.v = torch.zeros(t, device=dev)
-        if not self.use_warm_start:
-            self.v = torch.zeros(t, device=dev)
-        z = torch.full_like(self.v, self.memory_strength, device=dev)
+        if v is None or v.shape[0] != t:
+            v = torch.zeros(t, device=dev)
+        if not use_warm_start:
+            v = torch.zeros(t, device=dev)
+        z = torch.full_like(v, memory_strength, device=dev)
 
         # does not depend on v_star
-        # print(f"G shape: {self.G.shape}, g shape: {g.shape}")
-        Gg = torch.mv(self.G, g)
+        # print(f"G shape: {G.shape}, g shape: {g.shape}")
+        Gg = torch.mv(G, g)
         for _ in range(I):
-            if not self.use_adaptive_lr:
-                temp = torch.mv(self.G.T, self.v) # s ∈ n x 1
-                full_product = torch.mv(self.G, temp)
+            if not use_adaptive_lr:
+                temp = torch.mv(G.T, v) # s ∈ n x 1
+                full_product = torch.mv(G, temp)
             else:
-                full_product = torch.mv(self.GGT, self.v)
+                full_product = torch.mv(GGT, v)
             gradF = full_product + Gg
-            self.v -= self.lr * gradF
-            self.v = torch.max(self.v, z)
-        # print(self.G.T.shape, v.shape, g.shape)
-        # x = torch.mv(self.G.T, v)
+            v -= lr * gradF
+            v = torch.max(v, z)
+        # print(G.T.shape, v.shape, g.shape)
+        # x = torch.mv(G.T, v)
         # print(x.shape)
-        return self.v
+        return v

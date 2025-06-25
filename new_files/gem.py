@@ -6,19 +6,19 @@ from torch.utils.data import DataLoader
 from avalanche.models import avalanche_forward
 import qpsolvers
 
-from base_gem import BaseGEMPlugin
+from .base_gem import BaseGEMPlugin
 from . import core
-class GEMPlusPlugin(BaseGEMPlugin):
+class GEMPlugin(BaseGEMPlugin):
 
-    def __init__(self, *, patterns_per_exp: int, proj_metric):
+    def __init__(self, *, patterns_per_exp: int, memory_strength: float, proj_interval: int, proj_metric):
         """
-        :param patterns_per_experience: number of patterns per experience in the
+        :param patterns_per_exp: number of patterns per experience in the
             memory. (basically the number of samples per task)
         :param memory_strength: offset to add to the projection direction
             in order to favour backward transfer (gamma in original paper).
         """
 
-        super().__init__()
+        super().__init__(memory_strength=memory_strength, proj_interval=proj_interval)
 
         self.patterns_per_experience = int(patterns_per_exp)
         '''
@@ -121,7 +121,12 @@ class GEMPlusPlugin(BaseGEMPlugin):
             # v_star = self.solve_quadprog(g).to(strategy.device)
 
             # new code (approximation, faster)            print("Projecting")
-            g_proj, time_elapsed = core.time_projection(self.solve_quadprog, self, g)
+            g_proj, time_elapsed = core.time_projection(
+                self.solve_quadprog,
+                G=self.G,
+                g=g,
+                memory_strength=self.memory_strength
+            )
             g_proj = g_proj.to(strategy.device)
             self.proj_metric.elapsed += time_elapsed
             num_pars = 0  # reshape v_star into the parameter matrices
@@ -182,7 +187,7 @@ class GEMPlusPlugin(BaseGEMPlugin):
                 break
             tot += x.size(0)
 
-    def solve_quadprog(self, g):
+    def solve_quadprog(self, G, g, memory_strength):
         """
         Solve quadratic programming with current gradient g and
         gradients matrix on previous tasks G.
@@ -190,14 +195,14 @@ class GEMPlusPlugin(BaseGEMPlugin):
         https://github.com/facebookresearch/GradientEpisodicMemory/blob/master/model/gem.py
         """
 
-        memories_np = self.G.cpu().double().numpy()
+        memories_np = G.cpu().double().numpy()
         gradient_np = g.cpu().contiguous().view(-1).double().numpy()
         t = memories_np.shape[0]
         P = np.dot(memories_np, memories_np.transpose())
         P = 0.5 * (P + P.transpose()) + np.eye(t) * 1e-3
         q = np.dot(memories_np, gradient_np) * -1
         G = np.eye(t)
-        h = np.zeros(t) + self.memory_strength
+        h = np.zeros(t) + memory_strength
         # solution with old quadprog library, same as the author's implementation
         # v = quadprog.solve_qp(P, q, G, h)[0]
         # using new library qpsolvers
