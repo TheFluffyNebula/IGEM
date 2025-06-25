@@ -1,9 +1,6 @@
-import pytest
-from new_files import agem, igem, gem
-from .agem import AGEMPlugin
-from .igem import IGEMPlugin
-from .gem import GEMPlugin
-from new_files import core
+from ..plugins.agem import AGEMPlugin
+from ..plugins.igem import IGEMPlugin
+from ..plugins.gem import GEMPlugin
 import torch
 
 def test_gem_qp():
