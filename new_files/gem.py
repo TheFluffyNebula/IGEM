@@ -107,7 +107,7 @@ class GEMPlusPlugin(BaseGEMPlugin):
                 dim=0,
             )
             # if any gradients are negative then project
-            to_project = (torch.mv(self.G, g) < 0).any()
+            to_project = (self.projection_iteration % self.proj_interval == 0) and (torch.mv(self.G, g) < 0).any()
             # to_project = True
 
         else:
@@ -132,6 +132,7 @@ class GEMPlusPlugin(BaseGEMPlugin):
                 num_pars += curr_pars
 
             assert num_pars == g_proj.numel(), "Error in projecting gradient"
+        self.projection_iteration += 1
 
     def after_training_exp(self, strategy, **kwargs):
         """

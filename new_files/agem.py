@@ -94,19 +94,21 @@ class AGEMPlusPlugin(BaseGEMPlugin):
                 current_gradients.shape == self.reference_gradients.shape
             ), "Different model parameters in AGEM projection"
 
-            dotg = torch.dot(current_gradients, self.reference_gradients)
-            dotg = -1
-            if dotg < 0:
-                alpha2, time_elapsed = core.time_projection(self, dotg, self.reference_gradients)
-                self.proj_metric.elapsed += time_elapsed
-                grad_proj = current_gradients - self.reference_gradients * alpha2
+            if self.projection_iteration % self.projection_iteration_multiple == 0:
+                dotg = torch.dot(current_gradients, self.reference_gradients)
+                dotg = -1
+                if dotg < 0:
+                    alpha2, time_elapsed = core.time_projection(self, dotg, self.reference_gradients)
+                    self.proj_metric.elapsed += time_elapsed
+                    grad_proj = current_gradients - self.reference_gradients * alpha2
 
-                count = 0
-                for n, p in strategy.model.named_parameters():
-                    n_param = p.numel()
-                    if p.grad is not None:
-                        p.grad.copy_(grad_proj[count : count + n_param].view_as(p))
-                    count += n_param
+                    count = 0
+                    for n, p in strategy.model.named_parameters():
+                        n_param = p.numel()
+                        if p.grad is not None:
+                            p.grad.copy_(grad_proj[count : count + n_param].view_as(p))
+                        count += n_param
+            self.projection_iteration += 1
 
     def after_training_exp(self, strategy, **kwargs):
         """Update replay memory with patterns from current experience."""

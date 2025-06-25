@@ -1,1 +1,8 @@
-odca, sketch_gem, sgem + variants, n_iter
+odca
+
+refactor procedure:
+0. inherit from base-gem or igem?
+1. call function using core.time_project
+2. add modifications (n_iter, blr, warm)
+
+test all methods

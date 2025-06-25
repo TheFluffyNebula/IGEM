@@ -12,4 +12,6 @@ class BaseGEMPlugin(SupervisedPlugin):
 
         super().__init__()
         self.memory_strength = memory_strength
+        # setup the n_iter
+        self.projection_iteration = 0
         self.proj_interval = proj_interval
