@@ -4,14 +4,20 @@ import itertools
 from pathlib import Path
 
 def get_param_grid(experiment):
-    print(experiment['global'].items())
+    # print(experiment['global'].items(), end = '\n\n\n')
+    for k, v in experiment['global'].items():
+        # print(k, v)
+        if isinstance(v, str):
+            experiment['global'][k] = [v]
     keys = experiment['global'].keys()
-    param_grid = itertools.product(*experiment['global'].values())
-    
+    print(keys, end = '\n\n\n')
+    param_grid = itertools.product(*experiment['global'].values())    
+    print(*param_grid)
     return keys, param_grid
 def main(cfg, debug):
     experiment = cfg['debug'] if debug else cfg['full']
-    param_grid = get_param_grid(experiment)
+    # print(experiment, end='\n\n\n')
+    k, param_grid = get_param_grid(experiment)
     
     #print(*all_params)
     # for current_params in param_grid:
