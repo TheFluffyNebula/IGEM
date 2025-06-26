@@ -1,0 +1,60 @@
+# experiments
+full:
+  global:
+    seed: [0,100,250]
+    proj_interval: [1, 25, 50, 100, 500]
+    train_mb_size: [32]
+    eval_mb_size: [1000]
+    n_experiences: [10]
+    train_epochs: [1]
+    lr: [0.01, 0.03, 0.1, 0.3]
+    momentum: [0.0]
+    patterns_per_exp: [256]
+    memory_strength: [0.5]
+    output_dir: './results/full/'
+    cuda: [0]
+
+  strategies:
+    gem: 
+      memory_sizes: [200, 1280, 2560, 5120]
+    igem:
+      addons: [adaptive_lr, warm_start]
+      pgd_iterations: [3, 5]
+    agem:
+      sample_size: [256, 1300]
+
+  benchmarks:
+    permuted-mnist: [mlp]
+    cifar100: [resnet18]
+    mmlu-cl: [gpt2]
+    
+  
+
+debug:
+  global:
+    proj_interval: [500]
+    seed: [0]
+    train_mb_size: [1000]
+    eval_mb_size: [1000]
+    n_experiences: [2]
+    train_epochs: [1]
+    lr: [1.0]
+    momentum: [0.0]
+    patterns_per_exp: [10]
+    memory_strength: [0.5]
+    output_dir: './results/debug/'
+    cuda: [0]
+  
+  strategies:
+    gem: 
+      memory_sizes: [200]
+    igem:
+      addons: [adaptive_lr, warm_start]
+      pgd_iterations: [1]
+    agem:
+      sample_size: [1]
+
+  benchmarks:
+    permuted-mnist: [mlp]
+    cifar100: [resnet18]
+    mmlu-cl: [gpt2]
