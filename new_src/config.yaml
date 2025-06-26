@@ -27,8 +27,6 @@ full:
     permuted-mnist: [mlp]
     cifar100: [resnet18]
     mmlu-cl: [gpt2]
-    
-  
 
 debug:
   global:

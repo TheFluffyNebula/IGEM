@@ -1,9 +1,30 @@
 class Runner:
-    # explicitly pass all keywords (replace strategy_keywords)
-    def __init__(self, benchmark, strategy, strategy_keywords):
+    def __init__(self, benchmark, strategy, 
+            seed, proj_interval,
+            train_mb_size, eval_mb_size,
+            n_experiences, train_epochs,
+            lr, momentum, patterns_per_exp,
+            memory_strength, output_dir, cuda, 
+            **kwargs
+        ):
         self.benchmark = benchmark
         self.strategy = strategy
-        self.strategy_keywords = strategy_keywords
+        self.seed = seed
+        self.proj_interval = proj_interval
+        self.train_mb_size = train_mb_size
+        self.eval_mb_size = eval_mb_size
+        self.n_experiences = n_experiences
+        self.train_epochs = train_epochs
+        self.lr = lr
+        self.momentum = momentum
+        self.patterns_per_exp = patterns_per_exp
+        self.memory_strength = memory_strength
+        self.output_dir = output_dir
+        self.cuda = cuda
+
+        # Store any additional args as attributes
+        for k, v in kwargs.items():
+            setattr(self, k, v)
     
 
 

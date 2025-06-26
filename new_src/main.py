@@ -4,24 +4,29 @@ import itertools
 from pathlib import Path
 
 def get_param_grid(experiment):
-    # print(experiment['global'].items(), end = '\n\n\n')
     for k, v in experiment['global'].items():
-        # print(k, v)
         if isinstance(v, str):
             experiment['global'][k] = [v]
-    keys = experiment['global'].keys()
-    print(keys, end = '\n\n\n')
-    param_grid = itertools.product(*experiment['global'].values())    
-    print(*param_grid)
-    return keys, param_grid
+
+    # Extract keys (ordered) and value lists
+    keys = list(experiment['global'].keys())
+    values = list(experiment['global'].values())
+
+    # Create param grid
+    param_grid = list(itertools.product(*values))  # list of tuples
+
+    # Reconnect keys to values as dictionaries
+    configs = [dict(zip(keys, combo)) for combo in param_grid]
+    # print(configs)
+    return configs
 def main(cfg, debug):
     experiment = cfg['debug'] if debug else cfg['full']
     # print(experiment, end='\n\n\n')
-    k, param_grid = get_param_grid(experiment)
+    all_params = get_param_grid(experiment)
     
-    #print(*all_params)
-    # for current_params in param_grid:
-    #     print(current_params)
+    # print(all_params)
+    for current_params in all_params:
+        print(current_params)
 
     '''
     runner = Runner(benchmark, strategy, strategy_keywords)
