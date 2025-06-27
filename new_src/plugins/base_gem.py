@@ -38,7 +38,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         strategy.optimizer.zero_grad()
         
         # delegate method: draw from memory, forward/back pass, flatten grads
-        self.reference = self.compute_reference_gradients(strategy)
+        self.reference = self._compute_reference_gradients(strategy)
         
         strategy.optimizer.zero_grad()
 
@@ -49,7 +49,7 @@ class BaseGEMPlugin(SupervisedPlugin):
     
         # gather model gradients into a single vector
         g_list = [
-            (p.grad.flatten() if p.grad else torch.zeros(p.numel(), device=strategy.device))
+            (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
             for p in strategy.model.parameters()
         ]
         g = torch.cat(g_list, dim=0)
@@ -79,7 +79,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         offset = 0
         for p in strategy.model.parameters():
             n = p.numel()
-            if p.grad:
+            if p.grad is not None:
                 p.grad.copy_(g_proj[offset : offset + n].view_as(p))
             offset += n
         assert offset == g_proj.numel(), f"g_proj size {g_proj.numel()} does not match model g size {offset}"

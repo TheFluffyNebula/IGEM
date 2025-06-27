@@ -42,7 +42,7 @@ class GEMPlugin(BaseGEMPlugin):
         tot = 0
         for mbatch in dataloader:
             x, y, tid = mbatch[0], mbatch[1], mbatch[-1]
-            if tot + x.size(0) <= self.patterns_per_experience:
+            if tot + x.size(0) <= self.patterns_per_exp:
                 if t not in self.memory_x:
                     self.memory_x[t] = x.clone()
                     self.memory_y[t] = y.clone()
@@ -53,7 +53,7 @@ class GEMPlugin(BaseGEMPlugin):
                     self.memory_tid[t] = torch.cat((self.memory_tid[t], tid), dim=0)
 
             else:
-                diff = self.patterns_per_experience - tot
+                diff = self.patterns_per_exp - tot
                 if t not in self.memory_x:
                     self.memory_x[t] = x[:diff].clone()
                     self.memory_y[t] = y[:diff].clone()

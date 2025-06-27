@@ -107,7 +107,6 @@ class Runner:
             warm_start=getattr(self, "warm_start", False),
             lr=self.lr,
             sample_size=getattr(self, "sample_size", 1),
-            projection_iteration=self.projection_iteration,
             proj_metric=proj_metric
         )
 
