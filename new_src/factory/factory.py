@@ -58,9 +58,9 @@ def make_plugin(plugin_name: str, **kwargs):
             proj_interval=kwargs["proj_interval"],
             proj_metric=kwargs["proj_metric"],
             pgd_iterations=kwargs["pgd_iterations"],
-            adaptive_lr=kwargs.get("adaptive_lr", False),
-            warm_start=kwargs.get("warm_start", False),
-            sgd_lr=kwargs["lr"]
+            use_adaptive_lr=kwargs.get("adaptive_lr", False),
+            use_warm_start=kwargs.get("warm_start", False),
+            lr=kwargs["lr"]
         )
 
     elif plugin_name == "agem":

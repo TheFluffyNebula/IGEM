@@ -94,17 +94,30 @@ class IGEMPlugin(BaseGEMPlugin):
         tot = 0
         for mb in loader:
             x, y, tid = mb[0], mb[1], mb[-1]
-            if tot + x.size(0) <= self.patterns_per_exp:
-                self.memory_x.setdefault(t, x.clone())
-                self.memory_y.setdefault(t, y.clone())
-                self.memory_tid.setdefault(t, tid.clone())
+            bsz = x.size(0)
+
+            if tot + bsz <= self.patterns_per_exp:
+                if t not in self.memory_x:
+                    self.memory_x[t] = x.clone()
+                    self.memory_y[t] = y.clone()
+                    self.memory_tid[t] = tid.clone()
+                else:
+                    self.memory_x[t] = torch.cat((self.memory_x[t], x.clone()), dim=0)
+                    self.memory_y[t] = torch.cat((self.memory_y[t], y.clone()), dim=0)
+                    self.memory_tid[t] = torch.cat((self.memory_tid[t], tid.clone()), dim=0)
             else:
                 diff = self.patterns_per_exp - tot
-                self.memory_x[t] = torch.cat((self.memory_x[t], x[:diff]), dim=0)
-                self.memory_y[t] = torch.cat((self.memory_y[t], y[:diff]), dim=0)
-                self.memory_tid[t] = torch.cat((self.memory_tid[t], tid[:diff]), dim=0)
-                break
-            tot += x.size(0)
+                if t not in self.memory_x:
+                    self.memory_x[t] = x[:diff].clone()
+                    self.memory_y[t] = y[:diff].clone()
+                    self.memory_tid[t] = tid[:diff].clone()
+                else:
+                    self.memory_x[t] = torch.cat((self.memory_x[t], x[:diff].clone()), dim=0)
+                    self.memory_y[t] = torch.cat((self.memory_y[t], y[:diff].clone()), dim=0)
+                    self.memory_tid[t] = torch.cat((self.memory_tid[t], tid[:diff].clone()), dim=0)
+                break  # done collecting memory for this experience
+
+            tot += bsz
 
     def _should_project(self, g, mem_strength):
         return (torch.mv(self.reference, g) < -mem_strength).any()
