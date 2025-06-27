@@ -164,6 +164,9 @@ class Runner:
                 print(f"[Rank {DistributedHelper.rank}] OOM!\n" +
                 torch.cuda.memory_summary(abbreviated=True))
             raise
+        
+        self.result_filename = f"{self.plugin}_{self.benchmark}_{self.model}_{self.proj_interval}.csv"
+
         # only rank 0 writes
         if not self.dist or DistributedHelper.is_main_process:
             save_results(results, self.output_dir, self.result_filename)

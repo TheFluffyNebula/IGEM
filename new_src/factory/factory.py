@@ -27,9 +27,12 @@ def make_model(name: str, **kwargs):
 
     sig = inspect.signature(factory)
 
-    # Handle alias: num_classes → n_classes
-    if "num_classes" in kwargs and "n_classes" in sig.parameters:
-        kwargs["n_classes"] = kwargs.pop("num_classes")
+    # Handle aliases: num_classes → n_classes or nclasses
+    if "num_classes" in kwargs:
+        if "n_classes" in sig.parameters:
+            kwargs["n_classes"] = kwargs.pop("num_classes")
+        elif "nclasses" in sig.parameters:
+            kwargs["nclasses"] = kwargs.pop("num_classes")
 
     # Filter kwargs to only what the factory accepts
     filtered_kwargs = {
