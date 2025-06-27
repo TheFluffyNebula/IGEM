@@ -1,4 +1,3 @@
-# factories/make_model.py
 from models.mlp_model import MLPModel
 from models.resnet_model import ResNetModel
 

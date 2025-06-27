@@ -1,160 +1,40 @@
-from typing import Dict
+from typing import Dict, Any
 import numpy as np
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader
 from avalanche.models import avalanche_forward
 import qpsolvers
-
 from .base_gem import BaseGEMPlugin
 from . import core
+
 class GEMPlugin(BaseGEMPlugin):
-
-    def __init__(self, *, patterns_per_exp: int, memory_strength: float, proj_interval: int, proj_metric):
-        """
-        :param patterns_per_exp: number of patterns per experience in the
-            memory. (basically the number of samples per task)
-        :param memory_strength: offset to add to the projection direction
-            in order to favour backward transfer (gamma in original paper).
-        """
-
-        super().__init__(memory_strength=memory_strength, proj_interval=proj_interval)
-
-        self.patterns_per_experience = int(patterns_per_exp)
-        '''
-        "In practice, we found that adding a small constant lambda to v biased the gradient projection 
-            to updates that favoured beneficial backwards transfer"
-        '''
-        # (x, t, y) triplet: x -- feature vector, t -- task descriptor, y -- target vector
-        self.memory_x: Dict[int, Tensor] = dict()
-        self.memory_y: Dict[int, Tensor] = dict()
-        self.memory_tid: Dict[int, Tensor] = dict()
-        # initialize G, the matrix for gradients on loss on for (f(Θ), memory buffer)
-        self.G: Tensor = torch.empty(0)
-        self.proj_metric = proj_metric
-    def before_training_iteration(self, strategy, **kwargs):
-        """
-        Compute gradient constraints on previous memory samples from all
-        experiences.
-        """
-        '''
-        "If we have already trained on at least one prior experience, 
-        then use the saved memory gradients from those experiences to compute constraint projections."
-        '''
-        if strategy.clock.train_exp_counter > 0:
-            G = []
-            strategy.model.train()
-            # iterate over previous experiences, index = t
-            for t in range(strategy.clock.train_exp_counter):
-                # put the model in training mode
-                strategy.model.train()
-                # clear old gradients before computing a new backward pass. This is crucial to prevent gradient accumulation.
-                strategy.optimizer.zero_grad()
-                # load memory buffer input-output pairs to the same device (cpu/gpu) as the model
-                xref = self.memory_x[t].to(strategy.device)
-                yref = self.memory_y[t].to(strategy.device)
-                # run a forward pass through the model on these reference inputs.
-                out = avalanche_forward(strategy.model, xref, self.memory_tid[t])
-                # compute loss on reference examples (compare y to y-hat)
-                loss = strategy._criterion(out, yref)
-                # backward pass to compute gradients of model parameters with respect to loss
-                loss.backward()
-                '''
-                Extract and flatten all parameter gradients, concatenate them into a 1D tensor, and append to list G.
-                This creates a single vector representing the gradient for experience t.
-                If any parameter has no gradient (None), a zero vector of matching size is used instead (to preserve shape alignment).
-                '''
-                G.append(
-                    torch.cat(
-                        [
-                            (
-                                p.grad.flatten()
-                                if p.grad is not None
-                                else torch.zeros(p.numel(), device=strategy.device)
-                            )
-                            for p in strategy.model.parameters()
-                        ],
-                        dim=0,
-                    )
-                )
-            # Stack all experience gradient vectors into a matrix 
-            self.G = torch.stack(G)  # (experiences, parameters)
-
-    @torch.no_grad()
-    def after_backward(self, strategy, **kwargs):
-        """
-        Project gradient based on reference gradients
-        """
-        # 1) Store original gradients as ref_grad_ on each parameter
-        for p in strategy.model.parameters():
-            if p.grad is not None:
-                p.ref_grad_ = p.grad.clone()
-
-
-        # if we've already observed a task:
-        if strategy.clock.train_exp_counter > 0:
-            # iterate over all model parameters
-            # for each: if gradient exists, flatten to a 1D tensor and if not then use a tensor of zeros of the same size
-            g = torch.cat(
-                [
-                    (
-                        p.grad.flatten()
-                        if p.grad is not None
-                        else torch.zeros(p.numel(), device=strategy.device)
-                    )
-                    for p in strategy.model.parameters()
-                ],
-                dim=0,
-            )
-            # if any gradients are negative then project
-            to_project = (self.projection_iteration % self.proj_interval == 0) and (torch.mv(self.G, g) < 0).any()
-            # to_project = True
-
-        else:
-            # don't project (first experience)
-            to_project = False
-            # placeholder for v_star
-        if to_project:
-            # find closest vector to g
-
-            # old code (exact, slower)
-            # v_star = self.solve_quadprog(g).to(strategy.device)
-
-            # new code (approximation, faster)            print("Projecting")
-            g_proj, time_elapsed = core.time_projection(
-                self.solve_quadprog,
-                G=self.G,
-                g=g,
-                memory_strength=self.memory_strength
-            )
-            g_proj = g_proj.to(strategy.device)
-            self.proj_metric.elapsed += time_elapsed
-            num_pars = 0  # reshape v_star into the parameter matrices
-            for p in strategy.model.parameters():
-                curr_pars = p.numel()
-                if p.grad is not None:
-                    p.grad.copy_(g_proj[num_pars : num_pars + curr_pars].view(p.size()))
-                num_pars += curr_pars
-
-            assert num_pars == g_proj.numel(), "Error in projecting gradient"
-        self.projection_iteration += 1
-
-    def after_training_exp(self, strategy, **kwargs):
-        """
-        Save a copy of the model after each experience
-        """
-        # update the memory buffer
-        self.update_memory(
-            strategy.experience.dataset,
-            strategy.clock.train_exp_counter,
-            strategy.train_mb_size,
+    def __init__(
+        self,
+        patterns_per_exp: int,
+        memory_strength: float,
+        proj_interval: int,
+        proj_metric: Any,
+    ):
+        super().__init__(
+            memory_strength=memory_strength,
+            proj_interval=proj_interval,
+            patterns_per_exp=patterns_per_exp,
+            proj_metric=proj_metric,
         )
+        self.memory_x = {}
+        self.memory_y = {}
+        self.memory_tid = {}
 
+    def _has_memory(self) -> bool:
+        return bool(self.memory_x)
+    
     @torch.no_grad()
-    def update_memory(self, dataset, t, batch_size):
-        """
-        Update replay memory with patterns from current experience.
-        """
+    def _update_memory(self, strategy):
+        dataset = strategy.experience.dataset
+        t = strategy.clock.train_exp_counter
+        batch_size = strategy.train_mb_size
+        
         collate_fn = dataset.collate_fn if hasattr(dataset, "collate_fn") else None
         dataloader = DataLoader(
             dataset, batch_size=batch_size, collate_fn=collate_fn, shuffle=True
@@ -187,15 +67,12 @@ class GEMPlugin(BaseGEMPlugin):
                 break
             tot += x.size(0)
 
-    def solve_quadprog(self, G, g, memory_strength):
-        """
-        Solve quadratic programming with current gradient g and
-        gradients matrix on previous tasks G.
-        Taken from original code:
-        https://github.com/facebookresearch/GradientEpisodicMemory/blob/master/model/gem.py
-        """
-
-        memories_np = G.cpu().double().numpy()
+    def _should_project(self, g, mem_strength):
+        return (torch.mv(self.reference, g) < -mem_strength).any()
+    
+    def _solve_projection(self, g: Tensor, reference: Tensor, memory_strength: float):
+        # reference: G matrix
+        memories_np = reference.cpu().double().numpy()
         gradient_np = g.cpu().contiguous().view(-1).double().numpy()
         t = memories_np.shape[0]
         P = np.dot(memories_np, memories_np.transpose())
@@ -203,11 +80,24 @@ class GEMPlugin(BaseGEMPlugin):
         q = np.dot(memories_np, gradient_np) * -1
         G = np.eye(t)
         h = np.zeros(t) + memory_strength
-        # solution with old quadprog library, same as the author's implementation
-        # v = quadprog.solve_qp(P, q, G, h)[0]
-        # using new library qpsolvers
-        v = qpsolvers.solve_qp(P=P, q=-q, G=-G.transpose(), h=-h, solver="quadprog")
-        v_star = np.dot(v, memories_np) + gradient_np
+        v_star = qpsolvers.solve_qp(P=P, q=-q, G=-G.transpose(), h=-h, solver="quadprog")
+        g_proj = np.dot(v_star, memories_np) + gradient_np
+        return torch.from_numpy(g_proj).float().to(g.device)
+    
+    def _compute_reference_gradients(self, strategy) -> Tensor:
+        grads = []
+        for t in range(strategy.clock.train_exp_counter):
+            strategy.optimizer.zero_grad()
+            xref = self.memory_x[t].to(strategy.device)
+            yref = self.memory_y[t].to(strategy.device)
+            out = avalanche_forward(strategy.model, xref, self.memory_tid[t])
+            loss = strategy._criterion(out, yref)
+            loss.backward()
 
-        return torch.from_numpy(v_star).float()
+            flat = [
+                (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
+                for p in strategy.model.parameters()
+            ]
+            grads.append(torch.cat(flat, dim=0))
+        return torch.stack(grads, dim=0)
 

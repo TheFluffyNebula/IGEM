@@ -16,120 +16,30 @@ from avalanche.training.plugins.strategy_plugin import SupervisedPlugin
 from .base_gem import BaseGEMPlugin
 from . import core
 class AGEMPlugin(BaseGEMPlugin):
-    """Average Gradient Episodic Memory Plugin.
+    """Average GEM (A-GEM) concrete implementation."""
+    def __init__(
+        self,
+        patterns_per_exp: int,
+        sample_size: int,
+        memory_strength: float,
+        proj_interval: int,
+        proj_metric: Any,
+    ):
+        super().__init__(
+            memory_strength=memory_strength,
+            proj_interval=proj_interval,
+            patterns_per_exp=patterns_per_exp,
+            proj_metric=proj_metric,
+        )
+        self.sample_size = sample_size
+        self.buffers: list = []
+        self.buffer_dliter = iter([])
 
-    AGEM projects the gradient on the current minibatch by using an external
-    episodic memory of patterns from previous experiences. If the dot product
-    between the current gradient and the (average) gradient of a randomly
-    sampled set of memory examples is negative, the gradient is projected.
-    This plugin does not use task identities.
-    """
-
-    def __init__(self, patterns_per_exp: int, sample_size: int, memory_strength: float, proj_interval: int, proj_metric):
-        """
-        :param patterns_per_exp: number of patterns per experience in the
-            memory.
-        :param sample_size: number of patterns in memory sample when computing
-            reference gradient.
-        """
-
-        super().__init__(memory_strength=memory_strength, proj_interval=proj_interval)
-
-        self.patterns_per_experience = int(patterns_per_exp)
-        self.sample_size = int(sample_size)
-
-        # One AvalancheDataset for each experience
-        self.buffers: List[AvalancheDataset] = []
-        self.buffer_dataloader: Optional[GroupBalancedInfiniteDataLoader] = None
-        # Placeholder iterator to avoid typing issues
-        self.buffer_dliter: Iterator[Any] = iter([])
-        # Placeholder Tensor to avoid typing issues
-        self.reference_gradients: Tensor = torch.empty(0)
-        self.proj_metric = proj_metric
-
-    def before_training_iteration(self, strategy, **kwargs):
-        """
-        Compute reference gradient on memory sample.
-        """
-
-        if len(self.buffers) > 0:
-            strategy.model.train()
-            strategy.optimizer.zero_grad()
-            mb = self.sample_from_memory()
-            xref, yref, tid = mb[0], mb[1], mb[-1]
-            xref, yref = xref.to(strategy.device), yref.to(strategy.device)
-
-            out = avalanche_forward(strategy.model, xref, tid)
-            loss = strategy._criterion(out, yref)
-            loss.backward()
-            # gradient can be None for some head on multi-headed models
-            reference_gradients_list = [
-                (
-                    p.grad.view(-1)
-                    if p.grad is not None
-                    else torch.zeros(p.numel(), device=strategy.device)
-                )
-                for n, p in strategy.model.named_parameters()
-            ]
-            self.reference_gradients = torch.cat(reference_gradients_list)
-            strategy.optimizer.zero_grad()
-
+    def _has_memory(self) -> bool:
+        return len(self.buffers) > 0
+        
     @torch.no_grad()
-    def after_backward(self, strategy, **kwargs):
-        """
-        Project gradient based on reference gradients
-        """
-        if len(self.buffers) > 0:
-            current_gradients_list = [
-                (
-                    p.grad.view(-1)
-                    if p.grad is not None
-                    else torch.zeros(p.numel(), device=strategy.device)
-                )
-                for n, p in strategy.model.named_parameters()
-            ]
-            current_gradients = torch.cat(current_gradients_list)
-
-            assert (
-                current_gradients.shape == self.reference_gradients.shape
-            ), "Different model parameters in AGEM projection"
-
-            if self.projection_iteration % self.projection_iteration_multiple == 0:
-                dotg = torch.dot(current_gradients, self.reference_gradients)
-                dotg = -1
-                if dotg < 0:
-                    alpha2, time_elapsed = core.time_projection(
-                        self.solve_agem_sgd, 
-                        dotg=dotg, 
-                        reference_gradients=self.reference_gradients
-                    )
-                    self.proj_metric.elapsed += time_elapsed
-                    grad_proj = current_gradients - self.reference_gradients * alpha2
-
-                    count = 0
-                    for n, p in strategy.model.named_parameters():
-                        n_param = p.numel()
-                        if p.grad is not None:
-                            p.grad.copy_(grad_proj[count : count + n_param].view_as(p))
-                        count += n_param
-            self.projection_iteration += 1
-
-    def after_training_exp(self, strategy, **kwargs):
-        """Update replay memory with patterns from current experience."""
-        self.update_memory(strategy.experience.dataset, **kwargs)
-
-    def sample_from_memory(self):
-        """
-        Sample a minibatch from memory.
-        Return a tuple of patterns (tensor), targets (tensor).
-        """
-        return next(self.buffer_dliter)
-
-    @torch.no_grad()
-    def update_memory(self, dataset, num_workers=0, **kwargs):
-        """
-        Update replay memory with patterns from current experience.
-        """
+    def _update_memory(self, dataset, num_workers=0, **kwargs):
         if num_workers > 0:
             warnings.warn(
                 "Num workers > 0 is known to cause heavy" "slowdowns in AGEM."
@@ -152,10 +62,27 @@ class AGEMPlugin(BaseGEMPlugin):
         )
         self.buffer_dliter = iter(self.buffer_dataloader)
     
-    def solve_agem_sgd(self, dotg: torch.Tensor, reference_gradients: torch.Tensor):
-        torch.cuda.synchronize()
-        t0 = time.perf_counter()
-        alpha2 = dotg / torch.dot(reference_gradients, reference_gradients)
-        torch.cuda.synchronize()
-        t1 = time.perf_counter()
-        return alpha2, (t1 - t0)
+    def _should_project(self, g, mem_strength) -> bool:
+        margin = mem_strength *  torch.dot(self.reference, self.reference)
+        return torch.dot(self.reference, g) < -margin
+    
+    def _solve_projection(self, g: Tensor, reference: Tensor, mem_strength: float):
+        sq = torch.dot(reference, reference)
+        dotg = torch.dot(g, reference) + mem_strength * sq
+        alpha = dotg / sq
+        return (g - alpha * reference).to(g.device)
+
+    def _compute_reference_gradients(self, strategy) -> Tensor:
+        # Sample one minibatch
+        xref, yref, tid = next(self.buffer_dliter)
+        xref, yref = xref.to(strategy.device), yref.to(strategy.device)
+        out = avalanche_forward(strategy.model, xref, tid)
+        loss = strategy._criterion(out, yref)
+        loss.backward()
+
+        # Flatten into vector
+        flat = [
+            (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
+            for p in strategy.model.parameters()
+        ]
+        return torch.cat(flat, dim=0)
