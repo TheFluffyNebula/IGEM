@@ -4,3 +4,5 @@ numpy==2.2.6
 torch==2.7.0
 pytest==8.4.1
 datasets==3.6.0
+tokenizers=0.21.2
+transformers=4.53.0

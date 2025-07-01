@@ -2,6 +2,7 @@ import inspect
 from avalanche.benchmarks.classic import PermutedMNIST, SplitCIFAR100
 from avalanche.models import SimpleMLP, SlimResNet18
 from plugins import AGEMPlugin, GEMPlugin, IGEMPlugin
+from eval.mmlu_benchmark import make_mmlu_benchmark
 
 def make_benchmark(name: str, n_experiences: int, seed: int):
     if name == "permuted-mnist":
