@@ -1,40 +1,41 @@
 from datasets import get_dataset_config_names, load_dataset
 import json
 import os
+import time
 
-output_dir = "../data/mmlu"
+output_dir = "new_src/data/mmlu"
 os.makedirs(output_dir, exist_ok=True)
 
-print("Fetching subject names from 'hendrycks_test'...")
-subjects = get_dataset_config_names("hendrycks_test")
+# print("Fetching subject names from 'hendrycks_test'...")
+subjects = get_dataset_config_names("cais/mmlu")
 # print("Subjects found:", subjects)
-# print([(s, type(s)) for s in subjects])
 
-ds = load_dataset("hendrycks_test", "college_physics")
-print(ds)
+# ds = load_dataset("cais/mmlu")
+# print(ds)
 
-# for subject in subjects:
-#     if not subject or subject == "all":
-#         continue
+for subject in subjects:
+    time.sleep(0.1)
+    if not subject or subject == "all":
+        continue
 
-#     print(f"Processing subject: {subject}")
-#     try:
-#         ds = load_dataset("hendrycks_test", subject, split="test")
+    print(f"Processing subject: {subject}")
+    try:
+        ds = load_dataset("cais/mmlu", subject, split="test")
 
-#         data = []
-#         for item in ds:
-#             entry = {
-#                 "question": item["question"],
-#                 "choices": [item["A"], item["B"], item["C"], item["D"]],
-#                 "answer": item["answer"],
-#             }
-#             data.append(entry)
+        data = []
+        for item in ds:
+            entry = {
+                "question": item["question"],
+                "choices": item["choices"],  # already a list
+                "answer": item["answer"],    # integer index: 0, 1, 2, or 3
+            }
+            data.append(entry)
 
-#         json_path = os.path.join(output_dir, f"{subject}.json")
-#         with open(json_path, "w") as f:
-#             json.dump(data, f, indent=2)
+        json_path = os.path.join(output_dir, f"{subject}.json")
+        with open(json_path, "w") as f:
+            json.dump(data, f, indent=2)
 
-#         print(f"Saved {len(data)} examples to {json_path}")
+        print(f"Saved {len(data)} examples to {json_path}")
 
-#     except Exception as e:
-#         print(f"Failed to process subject '{subject}': {e}")
+    except Exception as e:
+        print(f"Failed to process subject '{subject}': {e}")
