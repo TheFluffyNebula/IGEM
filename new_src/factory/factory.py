@@ -5,15 +5,13 @@ from plugins import AGEMPlugin, GEMPlugin, IGEMPlugin
 
 def make_benchmark(name: str, n_experiences: int, seed: int):
     if name == "permuted-mnist":
-        fn = PermutedMNIST
+        return PermutedMNIST(n_experiences=n_experiences, seed=seed)
     elif name == "cifar100":
-        fn = SplitCIFAR100
+        return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
-        print("benchmark mmlu-cl todo")
+        return make_mmlu_benchmark(mmlu_root="data/mmlu", n_experiences=n_experiences, seed=seed)
     else:
         raise ValueError(f"Unknown benchmark: {name}")
-
-    return fn(n_experiences=n_experiences, seed=seed)
 
 def make_model(name: str, **kwargs):
     if name == "mlp":
