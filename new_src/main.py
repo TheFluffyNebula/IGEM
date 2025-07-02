@@ -50,7 +50,7 @@ def main(cfg, debug):
                             **strat_kwargs  # e.g., memory_sizes=5120
                         }
                         
-                        # print(config['benchmark'], config['plugin'], config['model'])
+                        # print(config['benchmark'], config['plugin'], config['model'], config)
                         runner = Runner(**config)
                         # if runner.plugin == 'igem':
                         #     print(runner.addons)
