@@ -4,7 +4,7 @@ import os
 import json
 from torch.utils.data import Dataset
 from avalanche.benchmarks import NCScenario
-from avalanche.benchmarks.utils import AvalancheDataset, make_classification_dataset
+from avalanche.benchmarks.utils import AvalancheDataset
 from transformers import GPT2Tokenizer
 
 
@@ -47,7 +47,7 @@ def make_mmlu_benchmark(mmlu_root: str, n_experiences: int, seed: int):
         with open(os.path.join(mmlu_root, fname)) as f:
             data = json.load(f)
         dataset = MMLUDataset(data, tokenizer)
-        dataset = AvalancheDataset(make_classification_dataset(dataset, task_labels=task_id))
+        dataset = AvalancheDataset(dataset, task_labels=task_id)
         datasets.append(dataset)
 
     return NCScenario(datasets)

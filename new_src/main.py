@@ -50,15 +50,15 @@ def main(cfg, debug):
                             **strat_kwargs  # e.g., memory_sizes=5120
                         }
                         
-                        # print(config['benchmark'], config['plugin'], config['model'], config)
-                        runner = Runner(**config)
-                        # if runner.plugin == 'igem':
-                        #     print(runner.addons)
-                        runner.setup_distributed()
-                        runner.setup_device_and_seed()
-                        runner.prepare_data()
-                        runner.build_model_and_plugin()
-                        runner.run()
+                        print(config['benchmark'], config['plugin'], config['model'], config)
+                        # runner = Runner(**config)
+                        # # if runner.plugin == 'igem':
+                        # #     print(runner.addons)
+                        # runner.setup_distributed()
+                        # runner.setup_device_and_seed()
+                        # runner.prepare_data()
+                        # runner.build_model_and_plugin()
+                        # runner.run()
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
