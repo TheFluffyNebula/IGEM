@@ -1,23 +1,35 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import GPT2Tokenizer, GPT2ForSequenceClassification
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from peft import LoraConfig, get_peft_model
 
-tokenizer = AutoTokenizer.from_pretrained("openai-community/gpt2")
-model = AutoModelForCausalLM.from_pretrained("openai-community/gpt2").to(device)
-model.eval()
+def get_gpt2_lora(**kwargs):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def score_choice(prompt: str, choice: str) -> float:
-    input_text = prompt + " " + choice
-    input_ids = tokenizer.encode(input_text, return_tensors="pt").to(device)
+    model = GPT2ForSequenceClassification.from_pretrained(
+        "gpt2",
+        num_labels=4,
+    ).to(device)
+    
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+    tokenizer.pad_token = tokenizer.eos_token  # Set pad_token to eos_token
 
-    with torch.no_grad():
-        outputs = model(input_ids, labels=input_ids)
-        loss = outputs.loss
-        log_likelihood = -loss.item() * input_ids.size(1)
+    model.config.pad_token_id = tokenizer.eos_token_id
 
-    return log_likelihood
+    lora_config = LoraConfig(
+        # rank of the adapter
+        r=8,
+        # scaling factor
+        lora_alpha=32,
+        # dropout on the adapter
+        lora_dropout=0.05,
+        # which submodules to adapt (GPT2’s attention proj layers)
+        target_modules=["c_attn", "c_proj"],
+        # no extra bias params
+        bias="none",
+        task_type="SEQ_CLS"
+    )
 
-def predict_best_choice(prompt: str, choices: list[str]) -> int:
-    scores = [score_choice(prompt, c) for c in choices]
-    return int(torch.tensor(scores).argmax().item())
+    model = get_peft_model(model, lora_config)
+    return model.to(device)

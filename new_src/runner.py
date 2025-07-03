@@ -67,7 +67,8 @@ class Runner:
             for exp in self.train_stream:
                 exp.dataset = exp.dataset  # no‐op, placeholder if you want to Subset()
         # num_classes is same for train & test
-        self.num_classes = bench.n_classes
+        
+        self.num_classes = bench.n_classes  
 
     def build_model_and_plugin(self, eval=True):
         model = make_model(name=self.model, num_classes=self.num_classes).to(self.device)

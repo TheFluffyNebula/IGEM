@@ -3,14 +3,16 @@ from avalanche.benchmarks.classic import PermutedMNIST, SplitCIFAR100
 from avalanche.models import SimpleMLP, SlimResNet18
 from plugins import AGEMPlugin, GEMPlugin, IGEMPlugin
 from eval.mmlu_benchmark import make_mmlu_benchmark
-
+from models.gpt_mc import get_gpt2_lora
 def make_benchmark(name: str, n_experiences: int, seed: int):
     if name == "permuted-mnist":
         return PermutedMNIST(n_experiences=n_experiences, seed=seed)
     elif name == "cifar100":
         return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
-        return make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
+        t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
+        t.n_classes = 4
+        return t
     else:
         raise ValueError(f"Unknown benchmark: {name}")
 
@@ -20,7 +22,7 @@ def make_model(name: str, **kwargs):
     elif name == "resnet18":
         factory = SlimResNet18
     elif name == "gpt2":
-        print("model gpt2 todo")
+        factory = get_gpt2_lora
     else:
         raise ValueError(f"Unknown model name: {name!r}")
 
@@ -66,6 +68,5 @@ def make_plugin(plugin_name: str, **kwargs):
         return AGEMPlugin(
             sample_size=kwargs["sample_size"]
         )
-
     else:
         raise ValueError(f"Unknown plugin type: {plugin_name}")
