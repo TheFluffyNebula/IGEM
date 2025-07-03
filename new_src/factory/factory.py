@@ -24,7 +24,7 @@ def make_model(name: str, **kwargs):
     elif name == "gpt2":
         factory = get_gpt2_lora
     else:
-        raise ValueError(f"Unknown model name: {name!r}")
+        raise ValueError(f"Unknown model name: {name}")
 
     sig = inspect.signature(factory)
 

@@ -61,7 +61,7 @@ def train_and_evaluate(
     results = []
     strategy.eval(test_stream)
     for exp_id, train_experience in enumerate(train_stream, start=1):
-        print(f"\n--- Training on Experience {exp_id} (classes: {train_experience.classes_in_this_experience}) ---")
+        print(f"\n--- Training on Experience {exp_id} ---")
         strategy.train(train_experience)
         print(f"\n--- Evaluating after Experience {exp_id} ---")
         res = strategy.eval(test_stream)
