@@ -10,7 +10,7 @@ def make_benchmark(name: str, n_experiences: int, seed: int):
     elif name == "cifar100":
         return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
-        return make_mmlu_benchmark(mmlu_root="data/mmlu", n_experiences=n_experiences, seed=seed)
+        return make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
     else:
         raise ValueError(f"Unknown benchmark: {name}")
 

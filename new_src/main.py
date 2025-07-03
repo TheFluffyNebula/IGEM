@@ -51,14 +51,14 @@ def main(cfg, debug):
                         }
                         
                         print(config['benchmark'], config['plugin'], config['model'], config)
-                        # runner = Runner(**config)
-                        # # if runner.plugin == 'igem':
-                        # #     print(runner.addons)
-                        # runner.setup_distributed()
-                        # runner.setup_device_and_seed()
-                        # runner.prepare_data()
-                        # runner.build_model_and_plugin()
-                        # runner.run()
+                        runner = Runner(**config)
+                        # if runner.plugin == 'igem':
+                        #     print(runner.addons)
+                        runner.setup_distributed()
+                        runner.setup_device_and_seed()
+                        runner.prepare_data()
+                        runner.build_model_and_plugin()
+                        runner.run()
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
