@@ -11,7 +11,7 @@ full:
     momentum: [0.0]
     patterns_per_exp: [256]
     memory_strength: [0.5]
-    output_dir: ['./results/full/']
+    output_dir: ['./new_results/full/']
     cuda: [0]
 
   plugins:
@@ -40,7 +40,7 @@ debug:
     momentum: [0.0]
     patterns_per_exp: [10]
     memory_strength: [0.5]
-    output_dir: ['./results/debug/']
+    output_dir: ['./new_results/debug/']
     cuda: [0]
   
   plugins:
