@@ -84,12 +84,8 @@ class BaseGEMPlugin(SupervisedPlugin):
             offset += n
         assert offset == g_proj.numel(), f"g_proj size {g_proj.numel()} does not match model g size {offset}"
     
-    def after_training_exp(self, strategy, **kwargs):
-        # Get the stored experience from the strategy
-        if hasattr(strategy, '_current_experience'):
-            self._update_memory(strategy._current_experience)
-        else:
-            print("Warning: No current experience found in strategy")
+def after_training_exp(self, strategy, experience, *args, **kwargs):
+    self._update_memory(experience.dataset)
     
     @abstractmethod
     def _has_memory(self):

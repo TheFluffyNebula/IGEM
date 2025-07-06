@@ -46,9 +46,9 @@ debug:
   plugins:
     gem: 
       memory_size: [200]
-    # igem:
-    #   addons: [adaptive_lr, warm_start]
-    #   pgd_iterations: [1]
+    igem:
+      addons: [adaptive_lr, warm_start]
+      pgd_iterations: [1]
     agem:
       sample_size: [1]
 
