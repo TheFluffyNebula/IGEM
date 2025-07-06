@@ -66,7 +66,11 @@ def make_plugin(plugin_name: str, **kwargs):
 
     elif plugin_name == "agem":
         return AGEMPlugin(
-            sample_size=kwargs["sample_size"]
+            sample_size=kwargs["sample_size"], 
+            patterns_per_exp=kwargs["patterns_per_exp"],
+            memory_strength=kwargs["memory_strength"],
+            proj_interval=kwargs["proj_interval"],
+            proj_metric=kwargs["proj_metric"],
         )
     else:
         raise ValueError(f"Unknown plugin type: {plugin_name}")
