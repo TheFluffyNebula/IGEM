@@ -9,7 +9,7 @@ import json
 import random
 import torch
 import numpy as np
-
+import util
 def make_task_dataset(data, tokenizer, task_id, max_length=512):
     input_ids_list, mask_list, labels = [], [], []
     for entry in data:
@@ -39,7 +39,8 @@ def make_task_dataset(data, tokenizer, task_id, max_length=512):
     t = torch.full((len(labels),), task_id, dtype=torch.long)
 
     # Avalanche will see samples as (X[i], y[i], t[i])
-    return AvalancheDataset(TensorDataset(X, y))
+    #return AvalancheDataset(TensorDataset(X, y))
+    return AvalancheDataset(TensorDataset(X_ids, y))
 
         
 class MMLUDataset(Dataset):
@@ -71,8 +72,9 @@ class MMLUDataset(Dataset):
 def make_mmlu_benchmark(mmlu_root: str,n_experiences, seed: int):
     random.seed(seed)
     np.random.seed(seed)
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer = util.get_tokenizer()
+    tokenizer.add_special_tokens({"pad_token": "[PAD]"})
+    tokenizer.pad_token = "[PAD]"
     all_files = sorted(f for f in os.listdir(mmlu_root) if f.endswith(".json"))
 
     if len(all_files) < n_experiences:

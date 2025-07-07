@@ -78,7 +78,12 @@ class AGEMPlugin(BaseGEMPlugin):
 
     def _compute_reference_gradients(self, strategy) -> Tensor:
         # Sample one minibatch
-        xref, yref, tid = next(self.buffer_dliter)
+        batch = next(iter(self.buffer_dliter))
+        try:
+            xref, yref, tid = batch
+        except ValueError:
+            xref, yref = batch
+            tid = torch.zeros_like(yref)
         xref, yref = xref.to(strategy.device), yref.to(strategy.device)
         out = avalanche_forward(strategy.model, xref, tid)
         loss = strategy._criterion(out, yref)

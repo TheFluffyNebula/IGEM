@@ -8,13 +8,20 @@ from avalanche.distributed.distributed_helper import DistributedHelper
 import pandas as pd
 from avalanche.logging import TextLogger
 
+from transformers import GPT2Tokenizer
 
 from avalanche.evaluation.metrics import (
     accuracy_metrics, 
     timing_metrics,
     loss_metrics,
     )
+def init_tokenizer():
+    global TOKENIZER
+    TOKENIZER = GPT2Tokenizer.from_pretrained("gpt2")
 
+
+def get_tokenizer():
+    return TOKENIZER
 def set_seed(seed: int = 123):
     random.seed(seed)
     np.random.seed(seed)

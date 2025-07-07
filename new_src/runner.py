@@ -55,6 +55,9 @@ class Runner:
         print(f"[Rank {DistributedHelper.rank}/{DistributedHelper.world_size}] using device {self.device}")
 
     def prepare_data(self):
+        if self.benchmark == "mmlu-cl":
+            import util
+            util.init_tokenizer()
         bench = make_benchmark(
             name=self.benchmark,
             n_experiences=self.n_experiences,
@@ -147,7 +150,7 @@ class Runner:
                 num_workers=kwargs.get("num_workers", 4),
                 pin_memory=(self.device.type == "cuda"),
                 drop_last=False,
-                collate_fn=mmlu_collate_fn   
+                #collate_fn=mmlu_collate_fn   
             )
         def eval_loader(self, experience, **kwargs):
             return DataLoader(
@@ -156,7 +159,7 @@ class Runner:
                 shuffle=False,
                 num_workers=kwargs.get("num_workers", 4),
                 pin_memory=(self.device.type == "cuda"),
-                collate_fn=mmlu_collate_fn
+                #collate_fn=mmlu_collate_fn
             )
         self.strategy.train_dataloader = MethodType(train_loader, self.strategy)
         self.strategy.eval_dataloader  = MethodType(eval_loader,  self.strategy)
@@ -185,12 +188,14 @@ class Runner:
             torch.distributed.destroy_process_group()
 
 def mmlu_collate_fn(batch):
-    # batch: List[(x_dict, label)]
-    ids = torch.stack([ex[0]["input_ids"]     for ex in batch], dim=0)  # [B, L]
-    mask= torch.stack([ex[0]["attention_mask"] for ex in batch], dim=0)  # [B, L]
-    # pack into one Tensor [B, 2, L]
-    packed = torch.stack([ids, mask], dim=1)  
-    labels = torch.tensor([ex[1] for ex in batch], dtype=torch.long)
-    import collections
-    print("[DEBUG]", collections.Counter(labels))
-    return packed, labels
+    encodings = [ex[0] for ex in batch]  # each is a dict of input_ids
+    labels    = torch.tensor([ex[1] for ex in batch], dtype=torch.long)
+    
+    # dynamic pad to the longest sequence in this batch:
+    input_ids = torch.nn.utils.rnn.pad_sequence(
+        encodings,
+        batch_first=True,
+        padding_value=tokenizer.pad_token_id
+    )
+    attention_mask = (input_ids != tokenizer.pad_token_id).long()
+    return input_ids, attention_mask, labels
