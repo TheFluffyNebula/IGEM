@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 from torch.utils.data.distributed import DistributedSampler
 from avalanche.distributed.distributed_helper import DistributedHelper
 from avalanche.training.supervised import Naive
@@ -61,7 +62,7 @@ class Runner:
         )
         # keep references
         self.train_stream, self.test_stream = bench.train_stream, bench.test_stream
-
+        print(bench.train_stream, bench.test_stream)
         if self.dist:
             # inject DistributedSampler into each train loader
             for exp in self.train_stream:
@@ -72,6 +73,20 @@ class Runner:
 
     def build_model_and_plugin(self, eval=True):
         model = make_model(name=self.model, num_classes=self.num_classes).to(self.device)
+        # if hasattr(model, "hf_model"):
+        #     print("=== MODEL TRAINABLE PARAMS ===")
+        #     print(model.hf_model.print_trainable_parameters())
+        #     from peft.tuners.lora import LoraLayer
+        #     print("=== MODULE NAMES ===")
+        #     for name, module in model.hf_model.named_modules():
+        #         if isinstance(module, LoraLayer):
+        #             # module.lora_A:  [r, in_dim]
+        #             # module.lora_B:  [out_dim, r]
+        #             pp = nn.Linear(1,1)
+        #             A = module.lora_A["default"]
+        #             B = module.lora_B["default"]
+        #             print(name, (A.in_features,A.out_features), (B.in_features, B.out_features))
+        #     return
         if self.dist:
            # pin this process to its GPU
            local_id = DistributedHelper.get_device_id()
@@ -87,7 +102,7 @@ class Runner:
            )
 
         optimizer = torch.optim.SGD(
-            model.parameters(),
+            [p for p in model.parameters() if p.requires_grad],
             lr=self.lr,
             momentum=self.momentum
         )
@@ -110,7 +125,6 @@ class Runner:
             sample_size=getattr(self, "sample_size", 1),
             proj_metric=proj_metric
         )
-
         self.strategy = Naive(
             model=model,
             optimizer=optimizer,
@@ -123,35 +137,29 @@ class Runner:
             eval_every=0,
             plugins=[plugin]
         )
-
-        if self.dist:
-            # patch in DDP‐friendly loaders
-            from types import MethodType
-            def train_loader(self, exp, **kw):
-                sampler = DistributedSampler(
-                    exp.dataset,
-                    num_replicas=DistributedHelper.world_size,
-                    rank=DistributedHelper.rank,
-                    shuffle=True
-                )
-                return torch.utils.data.DataLoader(
-                    exp.dataset,
-                    batch_size=self.train_mb_size,
-                    sampler=sampler,
-                    num_workers=kw.get("num_workers", 4),
-                    pin_memory=(self.device.type=="cuda"),
-                    drop_last=False
-                )
-            def eval_loader(self, exp, **kw):
-                return torch.utils.data.DataLoader(
-                    exp.dataset,
-                    batch_size=self.eval_mb_size,
-                    shuffle=False,
-                    num_workers=kw.get("num_workers", 4),
-                    pin_memory=(self.device.type=="cuda")
-                )
-            self.strategy.train_dataloader = MethodType(train_loader, self.strategy)
-            self.strategy.eval_dataloader  = MethodType(eval_loader,  self.strategy)
+        from types import MethodType
+        from torch.utils.data import DataLoader
+        def train_loader(self, experience, **kwargs):
+            return DataLoader(
+                experience.dataset,
+                batch_size=self.train_mb_size,
+                shuffle=True,
+                num_workers=kwargs.get("num_workers", 4),
+                pin_memory=(self.device.type == "cuda"),
+                drop_last=False,
+                collate_fn=mmlu_collate_fn   
+            )
+        def eval_loader(self, experience, **kwargs):
+            return DataLoader(
+                experience.dataset,
+                batch_size=self.eval_mb_size,
+                shuffle=False,
+                num_workers=kwargs.get("num_workers", 4),
+                pin_memory=(self.device.type == "cuda"),
+                collate_fn=mmlu_collate_fn
+            )
+        self.strategy.train_dataloader = MethodType(train_loader, self.strategy)
+        self.strategy.eval_dataloader  = MethodType(eval_loader,  self.strategy)
 
     def run(self):
         try:
@@ -175,3 +183,14 @@ class Runner:
         if self.dist:
             torch.distributed.barrier()
             torch.distributed.destroy_process_group()
+
+def mmlu_collate_fn(batch):
+    # batch: List[(x_dict, label)]
+    ids = torch.stack([ex[0]["input_ids"]     for ex in batch], dim=0)  # [B, L]
+    mask= torch.stack([ex[0]["attention_mask"] for ex in batch], dim=0)  # [B, L]
+    # pack into one Tensor [B, 2, L]
+    packed = torch.stack([ids, mask], dim=1)  
+    labels = torch.tensor([ex[1] for ex in batch], dtype=torch.long)
+    import collections
+    print("[DEBUG]", collections.Counter(labels))
+    return packed, labels

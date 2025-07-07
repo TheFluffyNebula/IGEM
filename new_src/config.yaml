@@ -30,22 +30,22 @@ full:
 
 debug:
   global:
-    proj_interval: [500]
+    proj_interval: [1]
     seed: [0]
-    train_mb_size: [1000]
-    eval_mb_size: [1000]
-    n_experiences: [2]
+    train_mb_size: [5]
+    eval_mb_size: [5]
+    n_experiences: [3]
     train_epochs: [1]
-    lr: [1.0]
+    lr: [0.0001]
     momentum: [0.0]
-    patterns_per_exp: [10]
-    memory_strength: [0.5]
+    patterns_per_exp: [200]
+    memory_strength: [0.1]
     output_dir: ['./new_results/debug/']
     cuda: [0]
   
   plugins:
-    gem: 
-      memory_size: [200]
+    # gem: 
+    #   memory_size: [200]
     igem:
       addons: [adaptive_lr, warm_start]
       pgd_iterations: [1]
@@ -53,6 +53,36 @@ debug:
       sample_size: [1]
 
   benchmarks:
-    # permuted-mnist: [mlp]
+    #permuted-mnist: [mlp]
     # cifar100: [resnet18]
     mmlu-cl: [gpt2]
+
+# config before some edits
+# debug:
+#   global:
+#     proj_interval: [1]
+#     seed: [0]
+#     train_mb_size: [5]
+#     eval_mb_size: [5]
+#     n_experiences: [3]
+#     train_epochs: [1]
+#     lr: [0.0001]
+#     momentum: [0.0]
+#     patterns_per_exp: [200]
+#     memory_strength: [0.1]
+#     output_dir: ['./new_results/debug/']
+#     cuda: [0]
+  
+#   plugins:
+#     # gem: 
+#     #   memory_size: [200]
+#     igem:
+#       addons: [adaptive_lr, warm_start]
+#       pgd_iterations: [1]
+#     agem:
+#       sample_size: [1]
+
+#   benchmarks:
+#     #permuted-mnist: [mlp]
+#     # cifar100: [resnet18]
+#     mmlu-cl: [gpt2]

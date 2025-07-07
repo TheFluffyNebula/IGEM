@@ -25,6 +25,7 @@ class AGEMPlugin(BaseGEMPlugin):
         proj_interval: int,
         proj_metric: Any,
     ):
+        print("=======Using AGEM plugin======")
         super().__init__(
             memory_strength=memory_strength,
             proj_interval=proj_interval,
@@ -39,16 +40,18 @@ class AGEMPlugin(BaseGEMPlugin):
         return len(self.buffers) > 0
         
     @torch.no_grad()
-    def _update_memory(self, dataset, num_workers=0, **kwargs):
+    def _update_memory(self, strategy, **kwargs):
+        dataset = strategy.experience.dataset
+        num_workers = 0
         if num_workers > 0:
             warnings.warn(
                 "Num workers > 0 is known to cause heavy" "slowdowns in AGEM."
             )
-        removed_els = len(dataset) - self.patterns_per_experience
+        removed_els = len(dataset) - self.patterns_per_exp
         if removed_els > 0:
             indices = list(range(len(dataset)))
             random.shuffle(indices)
-            dataset = dataset.subset(indices[: self.patterns_per_experience])
+            dataset = dataset.subset(indices[: self.patterns_per_exp])
 
         self.buffers.append(dataset)
 
@@ -67,6 +70,7 @@ class AGEMPlugin(BaseGEMPlugin):
         return torch.dot(self.reference, g) < -margin
     
     def _solve_projection(self, g: Tensor, reference: Tensor, mem_strength: float):
+        print("Projecting AGEM gradient")
         sq = torch.dot(reference, reference)
         dotg = torch.dot(g, reference) + mem_strength * sq
         alpha = dotg / sq

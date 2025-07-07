@@ -32,8 +32,6 @@ class BaseGEMPlugin(SupervisedPlugin):
         if not self._has_memory():
             return
         
-        # reset projection iteration every task
-        self.projection_iteration = 0
         strategy.model.train()
         strategy.optimizer.zero_grad()
         
@@ -60,7 +58,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         )
         
         self.projection_iteration += 1
-        print(f"p_iter: {self.projection_iteration}")
+        #print(f"p_iter: {self.projection_iteration}")
         
         if not do_proj:
             return
@@ -84,8 +82,8 @@ class BaseGEMPlugin(SupervisedPlugin):
             offset += n
         assert offset == g_proj.numel(), f"g_proj size {g_proj.numel()} does not match model g size {offset}"
     
-def after_training_exp(self, strategy, experience, *args, **kwargs):
-    self._update_memory(experience.dataset)
+    def after_training_exp(self, strategy, *args, **kwargs):
+        self._update_memory(strategy)
     
     @abstractmethod
     def _has_memory(self):

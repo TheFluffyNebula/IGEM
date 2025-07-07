@@ -8,9 +8,16 @@ class HuggingFaceWrapper(nn.Module):
         super().__init__()
         self.hf_model = hf_model
 
-    def forward(self, input_ids, attention_mask=None):
-        # Only return logits, not the full SequenceClassifierOutput
-        return self.hf_model(input_ids=input_ids, attention_mask=attention_mask).logits
+    def forward(self, packed, **kwargs):
+        # packed: [B, 2, L]
+        input_ids     = packed[:, 0, :]  # [B, L]
+        attention_mask= packed[:, 1, :]  # [B, L]
+
+        return self.hf_model(
+            input_ids=input_ids,
+            attention_mask=attention_mask
+        ).logits
+
 
 def get_gpt2_lora(**kwargs):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -35,6 +42,8 @@ def get_gpt2_lora(**kwargs):
     )
 
     model = get_peft_model(model, lora_config)
-    
+    for name, param in model.named_parameters():
+        if name.startswith("base_model.model.score"):
+            param.requires_grad = True
     # Wrap the model before returning
     return HuggingFaceWrapper(model).to(device)

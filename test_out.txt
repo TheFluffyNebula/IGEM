@@ -1,0 +1,66 @@
+/home/j_yin/IGEM/.venv/lib/python3.10/site-packages/avalanche/distributed/distributed_helper.py:163: UserWarning: Torch distributed could not be initialized (missing environment configuration)
+  warnings.warn(
+Some weights of GPT2ForSequenceClassification were not initialized from the model checkpoint at gpt2 and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home/j_yin/IGEM/.venv/lib/python3.10/site-packages/peft/tuners/lora/layer.py:1803: UserWarning: fan_in_fan_out is set to False but the target module is `Conv1D`. Setting fan_in_fan_out to True.
+  warnings.warn(
+/home/j_yin/IGEM/.venv/lib/python3.10/site-packages/avalanche/training/plugins/evaluation.py:94: UserWarning: No loggers specified, metrics will not be logged
+  warnings.warn("No loggers specified, metrics will not be logged")
+Some weights of GPT2ForSequenceClassification were not initialized from the model checkpoint at gpt2 and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of GPT2ForSequenceClassification were not initialized from the model checkpoint at gpt2 and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of GPT2ForSequenceClassification were not initialized from the model checkpoint at gpt2 and are newly initialized: ['score.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+mmlu-cl gem gpt2 {'proj_interval': 500, 'seed': 0, 'train_mb_size': 1000, 'eval_mb_size': 1000, 'n_experiences': 2, 'train_epochs': 1, 'lr': 1.0, 'momentum': 0.0, 'patterns_per_exp': 10, 'memory_strength': 0.5, 'output_dir': './new_results/debug/', 'cuda': 0, 'benchmark': 'mmlu-cl', 'plugin': 'gem', 'model': 'gpt2', 'memory_size': 200}
+[Rank 0/1] using device cuda:0
+<avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f76b87d0790> <avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f76b87d07c0>
+
+--- Training on Experience 1 ---
+
+--- Evaluating after Experience 1 ---
+
+--- Training on Experience 2 ---
+
+--- Evaluating after Experience 2 ---
+
+Results saved to: ./new_results/debug/gem_mmlu-cl_gpt2_500.csv
+mmlu-cl igem gpt2 {'proj_interval': 500, 'seed': 0, 'train_mb_size': 1000, 'eval_mb_size': 1000, 'n_experiences': 2, 'train_epochs': 1, 'lr': 1.0, 'momentum': 0.0, 'patterns_per_exp': 10, 'memory_strength': 0.5, 'output_dir': './new_results/debug/', 'cuda': 0, 'benchmark': 'mmlu-cl', 'plugin': 'igem', 'model': 'gpt2', 'addons': 'adaptive_lr', 'pgd_iterations': 1}
+[Rank 0/1] using device cuda:0
+<avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a47a9ba0> <avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a47a9bd0>
+
+--- Training on Experience 1 ---
+
+--- Evaluating after Experience 1 ---
+
+--- Training on Experience 2 ---
+
+--- Evaluating after Experience 2 ---
+
+Results saved to: ./new_results/debug/igem_mmlu-cl_gpt2_500.csv
+mmlu-cl igem gpt2 {'proj_interval': 500, 'seed': 0, 'train_mb_size': 1000, 'eval_mb_size': 1000, 'n_experiences': 2, 'train_epochs': 1, 'lr': 1.0, 'momentum': 0.0, 'patterns_per_exp': 10, 'memory_strength': 0.5, 'output_dir': './new_results/debug/', 'cuda': 0, 'benchmark': 'mmlu-cl', 'plugin': 'igem', 'model': 'gpt2', 'addons': 'warm_start', 'pgd_iterations': 1}
+[Rank 0/1] using device cuda:0
+<avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a471e170> <avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a471de40>
+
+--- Training on Experience 1 ---
+
+--- Evaluating after Experience 1 ---
+
+--- Training on Experience 2 ---
+
+--- Evaluating after Experience 2 ---
+
+Results saved to: ./new_results/debug/igem_mmlu-cl_gpt2_500.csv
+mmlu-cl agem gpt2 {'proj_interval': 500, 'seed': 0, 'train_mb_size': 1000, 'eval_mb_size': 1000, 'n_experiences': 2, 'train_epochs': 1, 'lr': 1.0, 'momentum': 0.0, 'patterns_per_exp': 10, 'memory_strength': 0.5, 'output_dir': './new_results/debug/', 'cuda': 0, 'benchmark': 'mmlu-cl', 'plugin': 'agem', 'model': 'gpt2', 'sample_size': 1}
+[Rank 0/1] using device cuda:0
+<avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a44257e0> <avalanche.benchmarks.scenarios.generic_scenario.EagerCLStream object at 0x7f74a4425390>
+
+--- Training on Experience 1 ---
+
+--- Evaluating after Experience 1 ---
+
+--- Training on Experience 2 ---
+
+--- Evaluating after Experience 2 ---
+
+Results saved to: ./new_results/debug/agem_mmlu-cl_gpt2_500.csv

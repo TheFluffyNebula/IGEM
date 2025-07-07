@@ -16,6 +16,7 @@ class GEMPlugin(BaseGEMPlugin):
         proj_interval: int,
         proj_metric: Any,
     ):
+        print("=======Using GEM plugin======")
         super().__init__(
             memory_strength=memory_strength,
             proj_interval=proj_interval,
@@ -71,6 +72,7 @@ class GEMPlugin(BaseGEMPlugin):
         return (torch.mv(self.reference, g) < -mem_strength).any()
     
     def _solve_projection(self, g: Tensor, reference: Tensor, memory_strength: float):
+        #print("Solving projection...")
         # reference: G matrix
         memories_np = reference.cpu().double().numpy()
         gradient_np = g.cpu().contiguous().view(-1).double().numpy()

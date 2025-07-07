@@ -6,10 +6,13 @@ import os
 from avalanche.training.plugins import EvaluationPlugin
 from avalanche.distributed.distributed_helper import DistributedHelper
 import pandas as pd
+from avalanche.logging import TextLogger
+
 
 from avalanche.evaluation.metrics import (
     accuracy_metrics, 
-    timing_metrics, 
+    timing_metrics,
+    loss_metrics,
     )
 
 def set_seed(seed: int = 123):
@@ -29,15 +32,16 @@ def get_device(cuda_id: int) -> torch.device:
 
 def get_eval_plugin(cuda_id, num_classes: int, proj_metric) -> EvaluationPlugin:
     all_metrics = [
-        accuracy_metrics(minibatch=True, epoch=True, experience=True, stream=True),
-        timing_metrics(minibatch=True, experience=True, stream=True, epoch=True),
+       # accuracy_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+       # timing_metrics(minibatch=True, experience=True, stream=True, epoch=True),
+        loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
         proj_metric
     ]
 
     # only the main process logs interactively
     #loggers = [InteractiveLogger] if DistributedHelper.is_distributed and not DistributedHelper.is_main_process else [InteractiveLogger()]
-    #loggers=[InteractiveLogger()]
-    loggers = None
+    loggers=[TextLogger(file=open('evaluation.log', 'w'))]
+    #loggers = None
     return EvaluationPlugin(
         *all_metrics,
         loggers=loggers,
