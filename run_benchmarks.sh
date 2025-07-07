@@ -59,5 +59,5 @@
 
 
 #!/usr/bin/env bash
-nohup python3 -u ./src/run_experiments.py > benchmark.log 2>&1 &
+nohup python3 -u ./new_src/main.py > benchmark.log 2>&1 &
 disown

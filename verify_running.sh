@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-ps aux | grep run_experiments.py 
+ps aux | grep main.py 
 tail -f benchmark.log

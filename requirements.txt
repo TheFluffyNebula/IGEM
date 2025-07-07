@@ -1,4 +1,9 @@
-avalanche-lib>=0.6.0
-pandas>=2.3.0
-numpy>=2.2.6
-torch>=2.7.0
+avalanche-lib==0.6.0
+pandas==2.3.0
+numpy==2.2.6
+torch==2.7.0
+pytest==8.4.1
+datasets==3.6.0
+tokenizers==0.21.2
+transformers==4.53.0
+peft==0.16.0
