@@ -1,0 +1,105 @@
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from test stream --
+> Eval on experience 0 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp000 = 2.2905
+-- Starting eval on experience 1 from test stream --
+> Eval on experience 1 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp001 = 2.9490
+-- Starting eval on experience 2 from test stream --
+> Eval on experience 2 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp002 = 3.9128
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/test_stream = 3.1632
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp000 = 2.5255
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 2.5255
+-- Starting training on experience 0 from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream = 1.9573
+	Loss_MB/train_phase/train_stream = 1.9675
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	<eval.metrics.ProjectionOverheadMetric object at 0x7f2c5c600610>/train_phase/train_stream/Exp000 = 0.0000
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.6077
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.6077
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from test stream --
+> Eval on experience 0 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.6376
+-- Starting eval on experience 1 from test stream --
+> Eval on experience 1 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp001 = 1.8005
+-- Starting eval on experience 2 from test stream --
+> Eval on experience 2 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp002 = 1.9866
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/test_stream = 1.8327
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.7744
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.7744
+-- Starting training on experience 1 from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream = 1.5879
+	Loss_MB/train_phase/train_stream = 1.5562
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	<eval.metrics.ProjectionOverheadMetric object at 0x7f3159d47130>/train_phase/train_stream/Exp001 = 0.0626
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.6203
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.6203
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from test stream --
+> Eval on experience 0 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.5631
+-- Starting eval on experience 1 from test stream --
+> Eval on experience 1 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp001 = 1.6325
+-- Starting eval on experience 2 from test stream --
+> Eval on experience 2 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp002 = 1.8121
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/test_stream = 1.6861
+-- >> Start of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.7771
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.7771
+-- Starting training on experience 2 from train stream --
+Epoch 0 ended.
+	Loss_Epoch/train_phase/train_stream = 1.5815
+	Loss_MB/train_phase/train_stream = 1.0762
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	<eval.metrics.ProjectionOverheadMetric object at 0x7f3159d47130>/train_phase/train_stream/Exp002 = 0.0534
+	Loss_Exp/eval_phase/train_stream/Exp002 = 2.4294
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 2.4294
+-- >> End of training phase << --
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from test stream --
+> Eval on experience 0 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.9742
+-- Starting eval on experience 1 from test stream --
+> Eval on experience 1 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp001 = 2.2337
+-- Starting eval on experience 2 from test stream --
+> Eval on experience 2 from test stream ended.
+	Loss_Exp/eval_phase/test_stream/Exp002 = 2.6044
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/test_stream = 2.3145
