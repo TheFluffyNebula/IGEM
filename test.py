@@ -12,6 +12,12 @@ from transformers import (
 )
 from sklearn.metrics import accuracy_score
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # or the specific GPU you want
+os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "true"
+os.environ["NCCL_DEBUG"] = "WARN"
+os.environ["NCCL_P2P_DISABLE"] = "1"  # <- workaround
+os.environ["NCCL_IB_DISABLE"] = "1"
+
 # 1) A tiny Dataset wrapper for one JSON file’s train/test split
 class MMLUSingleTask(Dataset):
     def __init__(self, data, tokenizer, max_length=512):
@@ -52,15 +58,20 @@ eval_ds  = MMLUSingleTask(test_data,  tokenizer)
 # 5) Model + LoRA adapters
 from peft import LoraConfig, get_peft_model
 base = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=4)
-lora_cfg = LoraConfig(
-    r=16, lora_alpha=32, lora_dropout=0.05,
-    target_modules=["c_attn","c_proj"], bias="none", task_type="SEQ_CLS"
-)
-model = get_peft_model(base, lora_cfg)
+
+# --- WITHOUT LORA ---
+model = base
+# --- WITH LORA ---
+# lora_cfg = LoraConfig(
+#     r=16, lora_alpha=32, lora_dropout=0.05,
+#     target_modules=["c_attn","c_proj"], bias="none", task_type="SEQ_CLS"
+# )
+# model = get_peft_model(base, lora_cfg)
 model.resize_token_embeddings(len(tokenizer))
 model.config.pad_token_id = tokenizer.pad_token_id
 # unfreeze the classification head
 for n,p in model.named_parameters():
+    
     if n.startswith("score."):
         p.requires_grad = True
 
@@ -77,11 +88,14 @@ training_args = TrainingArguments(
     disable_tqdm=False,
     report_to="none",
 )
-
+import pandas as pd
 # 7) compute_metrics callback
 def compute_metrics(p):
     preds = p.predictions.argmax(-1)
-    return {"accuracy": accuracy_score(p.label_ids, preds)}
+    acc= {"accuracy_base": accuracy_score(p.label_ids, preds)}
+    df = pd.read_csv("gpt2_mmlu_test_results.csv", )
+    df = pd.concat([df, pd.DataFrame(acc, index=[1])])
+    df.to_csv("gpt2_mmlu_test_results.csv")
 
 # 8) Trainer
 trainer = Trainer(

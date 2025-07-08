@@ -39,7 +39,7 @@ def get_device(cuda_id: int) -> torch.device:
 
 def get_eval_plugin(cuda_id, num_classes: int, proj_metric) -> EvaluationPlugin:
     all_metrics = [
-       # accuracy_metrics(minibatch=True, epoch=True, experience=True, stream=True),
+       accuracy_metrics(minibatch=True, epoch=True, experience=True, stream=True),
        # timing_metrics(minibatch=True, experience=True, stream=True, epoch=True),
         loss_metrics(minibatch=True, epoch=True, experience=True, stream=True),
         proj_metric

@@ -58,8 +58,8 @@ class AGEMPlugin(BaseGEMPlugin):
         persistent_workers = num_workers > 0
         self.buffer_dataloader = GroupBalancedInfiniteDataLoader(
             self.buffers,
-            batch_size=(self.sample_size // len(self.buffers)),
-            num_workers=num_workers,
+            batch_size = max(1, self.sample_size // len(self.buffers)),
+            num_workers=num_workers,w3
             pin_memory=False,
             persistent_workers=persistent_workers,
         )
@@ -69,15 +69,16 @@ class AGEMPlugin(BaseGEMPlugin):
         margin = mem_strength *  torch.dot(self.reference, self.reference)
         return torch.dot(self.reference, g) < -margin
     
-    def _solve_projection(self, g: Tensor, reference: Tensor, mem_strength: float):
+    def _solve_projection(self, g: Tensor, reference: Tensor, memory_strength: float):
         print("Projecting AGEM gradient")
         sq = torch.dot(reference, reference)
-        dotg = torch.dot(g, reference) + mem_strength * sq
+        dotg = torch.dot(g, reference) + memory_strength * sq
         alpha = dotg / sq
         return (g - alpha * reference).to(g.device)
 
     def _compute_reference_gradients(self, strategy) -> Tensor:
         # Sample one minibatch
+        print(self.buffers)
         batch = next(iter(self.buffer_dliter))
         try:
             xref, yref, tid = batch

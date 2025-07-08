@@ -1,0 +1,8 @@
+-- DEBUG TODO --
+Investigate the cause of the low accuracy in CL methods vs joint supervised 
+
+
+-- REFACTOR TODO --
+Remove extraneous code
+Avoid excessive boilerplate
+Clean and simple

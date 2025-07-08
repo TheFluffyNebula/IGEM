@@ -12,7 +12,7 @@ full:
     patterns_per_exp: [256]
     memory_strength: [0.5]
     output_dir: ['./new_results/full/']
-    cuda: [0]
+    cuda: [1]
 
   plugins:
     gem: 
@@ -39,7 +39,7 @@ debug:
     lr: [0.001]
     momentum: [0.0]
     patterns_per_exp: [200]
-    memory_strength: [0.1]
+    memory_strength: [1.0]
     output_dir: ['./new_results/debug/']
     cuda: [0]
   

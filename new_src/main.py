@@ -4,6 +4,9 @@ import itertools
 from pathlib import Path
 from runner import Runner
 
+# import os
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+
 def get_param_grid(experiment):
     # forgot to wrap output directory in a list
     # for k, v in experiment['global'].items():

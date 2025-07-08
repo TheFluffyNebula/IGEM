@@ -140,29 +140,6 @@ class Runner:
             eval_every=0,
             plugins=[plugin]
         )
-        from types import MethodType
-        from torch.utils.data import DataLoader
-        def train_loader(self, experience, **kwargs):
-            return DataLoader(
-                experience.dataset,
-                batch_size=self.train_mb_size,
-                shuffle=True,
-                num_workers=kwargs.get("num_workers", 4),
-                pin_memory=(self.device.type == "cuda"),
-                drop_last=False,
-                #collate_fn=mmlu_collate_fn   
-            )
-        def eval_loader(self, experience, **kwargs):
-            return DataLoader(
-                experience.dataset,
-                batch_size=self.eval_mb_size,
-                shuffle=False,
-                num_workers=kwargs.get("num_workers", 4),
-                pin_memory=(self.device.type == "cuda"),
-                #collate_fn=mmlu_collate_fn
-            )
-        self.strategy.train_dataloader = MethodType(train_loader, self.strategy)
-        self.strategy.eval_dataloader  = MethodType(eval_loader,  self.strategy)
 
     def run(self):
         try:
@@ -176,8 +153,13 @@ class Runner:
                 print(f"[Rank {DistributedHelper.rank}] OOM!\n" +
                 torch.cuda.memory_summary(abbreviated=True))
             raise
-        
-        self.result_filename = f"{self.plugin}_{self.benchmark}_{self.model}_{self.proj_interval}.csv"
+        s = ""
+        if self.plugin == "igem":
+            s += "adap_lr" if getattr(self, "adaptive_lr", False) else ""
+            s += "ws" if getattr(self, "warm_start", False) else ""
+            if s != "":
+                s += "_"
+        self.result_filename = f"{self.plugin}_{self.benchmark}_{self.model}_{s}{self.proj_interval}.csv"
 
         # only rank 0 writes
         if not self.dist or DistributedHelper.is_main_process:
