@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 from torch.utils.data.distributed import DistributedSampler
 from avalanche.distributed.distributed_helper import DistributedHelper
 from avalanche.training.supervised import Naive
@@ -54,6 +55,9 @@ class Runner:
         print(f"[Rank {DistributedHelper.rank}/{DistributedHelper.world_size}] using device {self.device}")
 
     def prepare_data(self):
+        if self.benchmark == "mmlu-cl":
+            import util
+            util.init_tokenizer()
         bench = make_benchmark(
             name=self.benchmark,
             n_experiences=self.n_experiences,
@@ -61,7 +65,7 @@ class Runner:
         )
         # keep references
         self.train_stream, self.test_stream = bench.train_stream, bench.test_stream
-
+        print(bench.train_stream, bench.test_stream)
         if self.dist:
             # inject DistributedSampler into each train loader
             for exp in self.train_stream:
@@ -72,6 +76,20 @@ class Runner:
 
     def build_model_and_plugin(self, eval=True):
         model = make_model(name=self.model, num_classes=self.num_classes).to(self.device)
+        # if hasattr(model, "hf_model"):
+        #     print("=== MODEL TRAINABLE PARAMS ===")
+        #     print(model.hf_model.print_trainable_parameters())
+        #     from peft.tuners.lora import LoraLayer
+        #     print("=== MODULE NAMES ===")
+        #     for name, module in model.hf_model.named_modules():
+        #         if isinstance(module, LoraLayer):
+        #             # module.lora_A:  [r, in_dim]
+        #             # module.lora_B:  [out_dim, r]
+        #             pp = nn.Linear(1,1)
+        #             A = module.lora_A["default"]
+        #             B = module.lora_B["default"]
+        #             print(name, (A.in_features,A.out_features), (B.in_features, B.out_features))
+        #     return
         if self.dist:
            # pin this process to its GPU
            local_id = DistributedHelper.get_device_id()
@@ -87,7 +105,7 @@ class Runner:
            )
 
         optimizer = torch.optim.SGD(
-            model.parameters(),
+            [p for p in model.parameters() if p.requires_grad],
             lr=self.lr,
             momentum=self.momentum
         )
@@ -110,7 +128,6 @@ class Runner:
             sample_size=getattr(self, "sample_size", 1),
             proj_metric=proj_metric
         )
-
         self.strategy = Naive(
             model=model,
             optimizer=optimizer,
@@ -124,35 +141,6 @@ class Runner:
             plugins=[plugin]
         )
 
-        if self.dist:
-            # patch in DDP‐friendly loaders
-            from types import MethodType
-            def train_loader(self, exp, **kw):
-                sampler = DistributedSampler(
-                    exp.dataset,
-                    num_replicas=DistributedHelper.world_size,
-                    rank=DistributedHelper.rank,
-                    shuffle=True
-                )
-                return torch.utils.data.DataLoader(
-                    exp.dataset,
-                    batch_size=self.train_mb_size,
-                    sampler=sampler,
-                    num_workers=kw.get("num_workers", 4),
-                    pin_memory=(self.device.type=="cuda"),
-                    drop_last=False
-                )
-            def eval_loader(self, exp, **kw):
-                return torch.utils.data.DataLoader(
-                    exp.dataset,
-                    batch_size=self.eval_mb_size,
-                    shuffle=False,
-                    num_workers=kw.get("num_workers", 4),
-                    pin_memory=(self.device.type=="cuda")
-                )
-            self.strategy.train_dataloader = MethodType(train_loader, self.strategy)
-            self.strategy.eval_dataloader  = MethodType(eval_loader,  self.strategy)
-
     def run(self):
         try:
             results = train_and_evaluate(
@@ -165,8 +153,13 @@ class Runner:
                 print(f"[Rank {DistributedHelper.rank}] OOM!\n" +
                 torch.cuda.memory_summary(abbreviated=True))
             raise
-        
-        self.result_filename = f"{self.plugin}_{self.benchmark}_{self.model}_{self.proj_interval}.csv"
+        s = ""
+        if self.plugin == "igem":
+            s += "adap_lr" if getattr(self, "adaptive_lr", False) else ""
+            s += "ws" if getattr(self, "warm_start", False) else ""
+            if s != "":
+                s += "_"
+        self.result_filename = f"{self.plugin}_{self.benchmark}_{self.model}_{s}{self.proj_interval}.csv"
 
         # only rank 0 writes
         if not self.dist or DistributedHelper.is_main_process:
@@ -175,3 +168,16 @@ class Runner:
         if self.dist:
             torch.distributed.barrier()
             torch.distributed.destroy_process_group()
+
+def mmlu_collate_fn(batch):
+    encodings = [ex[0] for ex in batch]  # each is a dict of input_ids
+    labels    = torch.tensor([ex[1] for ex in batch], dtype=torch.long)
+    
+    # dynamic pad to the longest sequence in this batch:
+    input_ids = torch.nn.utils.rnn.pad_sequence(
+        encodings,
+        batch_first=True,
+        padding_value=tokenizer.pad_token_id
+    )
+    attention_mask = (input_ids != tokenizer.pad_token_id).long()
+    return input_ids, attention_mask, labels

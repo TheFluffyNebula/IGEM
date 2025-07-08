@@ -2,15 +2,26 @@ import torch
 import torch.nn as nn
 from transformers import GPT2Tokenizer, GPT2ForSequenceClassification
 from peft import LoraConfig, get_peft_model
-
+from util import get_tokenizer
 class HuggingFaceWrapper(nn.Module):
-    def __init__(self, hf_model):
+    def __init__(self, peft_model, tokenizer):
         super().__init__()
-        self.hf_model = hf_model
+        self.model = peft_model
+        self.tokenizer = tokenizer
+        self.pad_token_id = tokenizer.pad_token_id
 
-    def forward(self, input_ids, attention_mask=None):
-        # Only return logits, not the full SequenceClassifierOutput
-        return self.hf_model(input_ids=input_ids, attention_mask=attention_mask).logits
+    def forward(self, input_ids):
+        # build mask internally
+        attention_mask = (input_ids != self.pad_token_id).long()
+        #print(f"Attention mask sum: {attention_mask.sum(dim=1)}" )
+        logits= self.model(
+            input_ids=input_ids,
+            attention_mask=attention_mask
+        ).logits
+        #print(f"Logits Shape: {logits.shape}")
+        return logits
+
+
 
 def get_gpt2_lora(**kwargs):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -20,13 +31,10 @@ def get_gpt2_lora(**kwargs):
         num_labels=4,
     )
     
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-    tokenizer.pad_token = tokenizer.eos_token  # Important for GPT2
-
-    model.config.pad_token_id = tokenizer.eos_token_id
+    tokenizer = get_tokenizer()
 
     lora_config = LoraConfig(
-        r=8,
+        r=16,
         lora_alpha=32,
         lora_dropout=0.05,
         target_modules=["c_attn", "c_proj"],
@@ -35,6 +43,11 @@ def get_gpt2_lora(**kwargs):
     )
 
     model = get_peft_model(model, lora_config)
+    model.resize_token_embeddings(len(tokenizer))
+    model.config.pad_token_id = tokenizer.pad_token_id
     
+    for name, param in model.named_parameters():
+        if name.startswith("base_model.model.score"):
+            param.requires_grad = True
     # Wrap the model before returning
-    return HuggingFaceWrapper(model).to(device)
+    return HuggingFaceWrapper(model,tokenizer).to(device)

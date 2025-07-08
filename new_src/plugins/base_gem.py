@@ -14,7 +14,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         memory_strength: float,
         proj_interval: int,
         patterns_per_exp: int,
-        proj_metric: Any = None,
+        proj_metric,
     ):
         super().__init__()
         self.memory_strength      = memory_strength
@@ -23,6 +23,10 @@ class BaseGEMPlugin(SupervisedPlugin):
         self.projection_iteration = 0
         self.proj_metric          = proj_metric
         
+        if self.proj_metric:
+            print("GEM: using projection metric")
+            print(f"Projection interval: {self.proj_interval}")
+            
         # To be set by derived classes:
         # GEM: matrix of gradient references
         # AGEM: single averaged gradient reference
@@ -32,8 +36,6 @@ class BaseGEMPlugin(SupervisedPlugin):
         if not self._has_memory():
             return
         
-        # reset projection iteration every task
-        self.projection_iteration = 0
         strategy.model.train()
         strategy.optimizer.zero_grad()
         
@@ -60,7 +62,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         )
         
         self.projection_iteration += 1
-        print(f"p_iter: {self.projection_iteration}")
+        #print(f"p_iter: {self.projection_iteration}")
         
         if not do_proj:
             return
@@ -74,7 +76,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         # update projection overhead metric
         if self.proj_metric:
             self.proj_metric.elapsed += elapsed
-        
+            print(f"Projection metric updated: {self.proj_metric.elapsed} seconds")
         # write back into params
         offset = 0
         for p in strategy.model.parameters():
@@ -84,8 +86,8 @@ class BaseGEMPlugin(SupervisedPlugin):
             offset += n
         assert offset == g_proj.numel(), f"g_proj size {g_proj.numel()} does not match model g size {offset}"
     
-def after_training_exp(self, strategy, experience, *args, **kwargs):
-    self._update_memory(experience.dataset)
+    def after_training_exp(self, strategy, *args, **kwargs):
+        self._update_memory(strategy)
     
     @abstractmethod
     def _has_memory(self):

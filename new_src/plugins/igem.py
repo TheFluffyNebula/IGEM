@@ -60,14 +60,28 @@ class IGEMPlugin(BaseGEMPlugin):
             L = torch.linalg.eigvalsh(self.GGT).max()
             self.lr = 1.0 / (L + 1e-6)
         return self.G
-
-    def _solve_projection(self, v, t, dev, G, g, GGT, I, lr, memory_strength, use_adaptive_lr, use_warm_start):
+    def _solve_projection(self, g, reference, memory_strength):
+        return self._solve_projection_pgd(
+            v=self.v,
+            t=reference.shape[0],
+            dev=g.device,
+            G=self.G,
+            g=g,
+            GGT=self.GGT,
+            I=self.pgd_iterations,
+            lr=self.lr,
+            memory_strength=memory_strength,
+            use_adaptive_lr=self.use_adaptive_lr,
+            use_warm_start=self.use_warm_start
+        )
+    def _solve_projection_pgd(self, v, t, dev, G, g, GGT, I, lr, memory_strength, use_adaptive_lr, use_warm_start):
         '''
         theory: v* <- 0-vector
         gradF w/ respect to v: G * (transpose(G) * v) + G * g
         new-v_star <- old-v_star - alpha * gradF
         new-v_star <- max[0-vector, v]
         '''
+        #print(f"[DEBUG] Solving projection with parameters: t={t}, dev={dev}, I={I}, lr={lr}, memory_strength={memory_strength}, use_adaptive_lr={use_adaptive_lr}, use_warm_start={use_warm_start}")
         if v is None or v.shape[0] != t or not use_warm_start:
             v = torch.zeros(t, device=dev)
 
@@ -83,7 +97,8 @@ class IGEMPlugin(BaseGEMPlugin):
             gradF = full_product + Gg
             v -= lr * gradF
             v = torch.max(v, z)
-        return v
+        g_proj = torch.mv(G.T, v) + g
+        return g_proj.to(dev)
     
     def _update_memory(self, strategy):
         ds = strategy.experience.dataset

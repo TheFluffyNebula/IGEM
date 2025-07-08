@@ -5,3 +5,4 @@ __pycache__/
 GEM/
 Implementing GEM Baselines.md
 benchmark.log
+evaluation.log
