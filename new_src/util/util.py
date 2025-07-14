@@ -84,8 +84,8 @@ def train_and_evaluate(
         for i, test_exp in enumerate(test_stream):
             metrics = strategy.eval([test_exp])
             #TODO: KEY DYNAMICALLY CHANGE WITH BENCHMARK
-            key = f"Top1_Acc_Exp/eval_phase/test_stream/Exp{i:03d}"
-            R[i, j] = metrics[key]
+            key = f"Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp{i:03d}"
+            R[i, j] = metrics[key]  
             results.append(metrics)
 
     print("R matrix:\n", R)
