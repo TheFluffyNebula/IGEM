@@ -4,12 +4,15 @@ from avalanche.models import SimpleMLP, SlimResNet18
 from plugins import AGEMPlugin, GEMPlugin, IGEMPlugin
 from eval.mmlu_benchmark import make_mmlu_benchmark
 from models.gpt_mc import get_gpt2_lora
+import util
+
 def make_benchmark(name: str, n_experiences: int, seed: int):
     if name == "permuted-mnist":
         return PermutedMNIST(n_experiences=n_experiences, seed=seed)
     elif name == "cifar100":
         return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
+        util.init_tokenizer()
         t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
         t.n_classes = 4
         return t
@@ -49,7 +52,9 @@ def make_plugin(plugin_name: str, **kwargs):
             patterns_per_exp=kwargs["patterns_per_exp"],
             memory_strength=kwargs["memory_strength"],
             proj_interval=kwargs["proj_interval"],
-            proj_metric=kwargs["proj_metric"]
+            proj_metric=kwargs["proj_metric"],
+            memory_size=kwargs["memory_size"],
+            n_experiences=kwargs["n_experiences"],
         )
 
     elif plugin_name == "igem":
@@ -61,7 +66,9 @@ def make_plugin(plugin_name: str, **kwargs):
             pgd_iterations=kwargs["pgd_iterations"],
             use_adaptive_lr=kwargs.get("adaptive_lr", False),
             use_warm_start=kwargs.get("warm_start", False),
-            lr=kwargs["lr"]
+            lr=kwargs["lr"],
+            memory_size=kwargs["memory_size"],
+            n_experiences=kwargs["n_experiences"],
         )
 
     elif plugin_name == "agem":
@@ -71,6 +78,8 @@ def make_plugin(plugin_name: str, **kwargs):
             memory_strength=kwargs["memory_strength"],
             proj_interval=kwargs["proj_interval"],
             proj_metric=kwargs["proj_metric"],
+            memory_size=kwargs["memory_size"],
+            n_experiences=kwargs["n_experiences"],
         )
     else:
         raise ValueError(f"Unknown plugin type: {plugin_name}")

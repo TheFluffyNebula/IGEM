@@ -19,6 +19,7 @@ class HuggingFaceWrapper(nn.Module):
             attention_mask=attention_mask
         ).logits
         #print(f"Logits Shape: {logits.shape}")
+        
         return logits
 
 
@@ -45,9 +46,24 @@ def get_gpt2_lora(**kwargs):
     model = get_peft_model(model, lora_config)
     model.resize_token_embeddings(len(tokenizer))
     model.config.pad_token_id = tokenizer.pad_token_id
-    
+    model.config.attn_pdrop = 0.0
+    model.config.resid_pdrop = 0.0
     for name, param in model.named_parameters():
         if name.startswith("base_model.model.score"):
             param.requires_grad = True
+    layers_to_keep = { 10,11}
+
+    for name, p in model.named_parameters():
+        if "lora_A" in name or "lora_B" in name:
+            layer_idx = int(name.split(".")[4])
+            if layer_idx not in layers_to_keep:
+                p.requires_grad = False
+        if p.requires_grad:
+            print(name)
+    cnt = sum([p.numel() for _, p in model.named_parameters() if p.requires_grad])
+    n_tensors = sum(1 for p in model.parameters() if p.requires_grad)
+    n_scalars = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print("Trainable tensors:", n_tensors)
+    print("Trainable scalars:", n_scalars)
     # Wrap the model before returning
     return HuggingFaceWrapper(model,tokenizer).to(device)

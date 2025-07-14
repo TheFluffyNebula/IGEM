@@ -8,30 +8,15 @@ from runner import Runner
 # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 def get_param_grid(experiment):
-    # forgot to wrap output directory in a list
-    # for k, v in experiment['global'].items():
-    #     if isinstance(v, str):
-    #         experiment['global'][k] = [v]
-
-    # Extract keys (ordered) and value lists
     keys = list(experiment['global'].keys())
     values = list(experiment['global'].values())
-
-    # Create param grid
-    param_grid = list(itertools.product(*values))  # list of tuples
-
-    # Reconnect keys to values as dictionaries
+    param_grid = list(itertools.product(*values)) 
     configs = [dict(zip(keys, combo)) for combo in param_grid]
-    # print(configs)
     return configs
+
 def main(cfg, debug):
     experiment = cfg['debug'] if debug else cfg['full']
-    # print(experiment, end='\n\n\n')
     global_configs = get_param_grid(experiment)
-    # for current_params in global_params:
-    #     print(current_params)
-
-    # Loop through strategies
     for plugin, plugin_settings in experiment["plugins"].items():
         plugin_keys = list(plugin_settings.keys())
         plugin_values = list(plugin_settings.values())
@@ -40,24 +25,21 @@ def main(cfg, debug):
         for plugin_config in plugin_grid:
             strat_kwargs = dict(zip(plugin_keys, plugin_config))
             
-            # Loop through benchmarks + associated models
             for benchmark, models in experiment["benchmarks"].items():
                 for model in models:
                     for global_params in global_configs:
-                        # Combine everything
+                        out_dir = global_params["output_dir"] + benchmark + "/"
                         config = {
                             **global_params,
+                            "output_dir" : out_dir,
                             "benchmark": benchmark,
                             "plugin": plugin,
                             "model": model,
-                            **strat_kwargs  # e.g., memory_sizes=5120
+                            **strat_kwargs  
                         }
                         
                         print(config['benchmark'], config['plugin'], config['model'], config)
                         runner = Runner(**config)
-                        # if runner.plugin == 'igem':
-                        #     print(runner.addons)
-                        runner.setup_distributed()
                         runner.setup_device_and_seed()
                         runner.prepare_data()
                         runner.build_model_and_plugin()

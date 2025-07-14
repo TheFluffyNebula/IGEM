@@ -24,9 +24,13 @@ class AGEMPlugin(BaseGEMPlugin):
         memory_strength: float,
         proj_interval: int,
         proj_metric: Any,
+        n_experiences: int,
+        memory_size: int,
     ):
         print("=======Using AGEM plugin======")
         super().__init__(
+            n_experiences=n_experiences,
+            memory_size=memory_size,
             memory_strength=memory_strength,
             proj_interval=proj_interval,
             patterns_per_exp=patterns_per_exp,
@@ -38,10 +42,15 @@ class AGEMPlugin(BaseGEMPlugin):
 
     def _has_memory(self) -> bool:
         return len(self.buffers) > 0
-        
+    def _reset_memory(self, strategy):
+        self.buffer = []
+        self.buffer_dliter = iter([])
     @torch.no_grad()
     def _update_memory(self, strategy, **kwargs):
         dataset = strategy.experience.dataset
+        indices = list(range(len(dataset)))
+        random.shuffle(indices)
+        dataset = dataset.subset(indices[: self.memory_size])
         num_workers = 0
         if num_workers > 0:
             warnings.warn(
@@ -54,12 +63,11 @@ class AGEMPlugin(BaseGEMPlugin):
             dataset = dataset.subset(indices[: self.patterns_per_exp])
 
         self.buffers.append(dataset)
-
         persistent_workers = num_workers > 0
         self.buffer_dataloader = GroupBalancedInfiniteDataLoader(
             self.buffers,
-            batch_size = max(1, self.sample_size // len(self.buffers)),
-            num_workers=num_workers,w3
+            batch_size = self.sample_size,
+            num_workers=num_workers,
             pin_memory=False,
             persistent_workers=persistent_workers,
         )
@@ -70,7 +78,6 @@ class AGEMPlugin(BaseGEMPlugin):
         return torch.dot(self.reference, g) < -margin
     
     def _solve_projection(self, g: Tensor, reference: Tensor, memory_strength: float):
-        print("Projecting AGEM gradient")
         sq = torch.dot(reference, reference)
         dotg = torch.dot(g, reference) + memory_strength * sq
         alpha = dotg / sq
@@ -78,7 +85,7 @@ class AGEMPlugin(BaseGEMPlugin):
 
     def _compute_reference_gradients(self, strategy) -> Tensor:
         # Sample one minibatch
-        print(self.buffers)
+        #print(self.buffers)
         batch = next(iter(self.buffer_dliter))
         try:
             xref, yref, tid = batch

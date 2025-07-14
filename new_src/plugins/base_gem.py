@@ -14,6 +14,8 @@ class BaseGEMPlugin(SupervisedPlugin):
         memory_strength: float,
         proj_interval: int,
         patterns_per_exp: int,
+        n_experiences: int,
+        memory_size: int,
         proj_metric,
     ):
         super().__init__()
@@ -22,6 +24,7 @@ class BaseGEMPlugin(SupervisedPlugin):
         self.patterns_per_exp     = patterns_per_exp
         self.projection_iteration = 0
         self.proj_metric          = proj_metric
+        self.memory_size          = memory_size // n_experiences
         
         if self.proj_metric:
             print("GEM: using projection metric")
@@ -32,14 +35,19 @@ class BaseGEMPlugin(SupervisedPlugin):
         # AGEM: single averaged gradient reference
         self.reference : Tensor = None
         
-    def before_training_iteration(self, strategy, **kwargs):
+    def before_training_iteration(self, strategy, *args, **kwargs):
+        # batch_x, batch_y = strategy.mb_x, strategy.mb_y
+        # for i in range(50):
+        #     strategy.model.train()
+        #     strategy.optimizer.zero_grad()
+        #     out   = strategy.model(batch_x)
+        #     loss  = strategy._criterion(out, batch_y)
+        #     loss.backward()
+        #     strategy.optimizer.step()
+        #     print(f"Step {i:2d} — loss: {loss.item():.4f}")
+        # raise ValueError
         if not self._has_memory():
             return
-        
-        strategy.model.train()
-        strategy.optimizer.zero_grad()
-        
-        # delegate method: draw from memory, forward/back pass, flatten grads
         self.reference = self._compute_reference_gradients(strategy)
         
         strategy.optimizer.zero_grad()
@@ -49,7 +57,6 @@ class BaseGEMPlugin(SupervisedPlugin):
         if not self._has_memory():
             return
     
-        # gather model gradients into a single vector
         g_list = [
             (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
             for p in strategy.model.parameters()
@@ -62,22 +69,18 @@ class BaseGEMPlugin(SupervisedPlugin):
         )
         
         self.projection_iteration += 1
-        #print(f"p_iter: {self.projection_iteration}")
         
         if not do_proj:
             return
-        # calculate projected gradient and time it
         g_proj, elapsed = core.time_projection(
             self._solve_projection,
             g=g,
             reference=self.reference,
             memory_strength=self.memory_strength
         )
-        # update projection overhead metric
         if self.proj_metric:
             self.proj_metric.elapsed += elapsed
-            print(f"Projection metric updated: {self.proj_metric.elapsed} seconds")
-        # write back into params
+            
         offset = 0
         for p in strategy.model.parameters():
             n = p.numel()
@@ -88,7 +91,10 @@ class BaseGEMPlugin(SupervisedPlugin):
     
     def after_training_exp(self, strategy, *args, **kwargs):
         self._update_memory(strategy)
-    
+
+    @abstractmethod
+    def _reset_memory(self, strategy):
+        pass
     @abstractmethod
     def _has_memory(self):
         pass

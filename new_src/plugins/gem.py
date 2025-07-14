@@ -7,17 +7,20 @@ from avalanche.models import avalanche_forward
 import qpsolvers
 from .base_gem import BaseGEMPlugin
 from . import core
-
 class GEMPlugin(BaseGEMPlugin):
     def __init__(
         self,
         patterns_per_exp: int,
+        n_experiences: int,
+        memory_size: int,
         memory_strength: float,
         proj_interval: int,
         proj_metric: Any,
     ):
         print("=======Using GEM plugin======")
         super().__init__(
+            n_experiences=n_experiences,
+            memory_size=memory_size,
             memory_strength=memory_strength,
             proj_interval=proj_interval,
             patterns_per_exp=patterns_per_exp,
@@ -29,7 +32,10 @@ class GEMPlugin(BaseGEMPlugin):
 
     def _has_memory(self) -> bool:
         return bool(self.memory_x)
-    
+    def _reset_memory(self, strategy):
+        self.memory_x = {}
+        self.memory_y = {}
+        self.memory_tid = {}
     @torch.no_grad()
     def _update_memory(self, strategy):
         dataset = strategy.experience.dataset
@@ -52,6 +58,11 @@ class GEMPlugin(BaseGEMPlugin):
                     self.memory_x[t] = torch.cat((self.memory_x[t], x), dim=0)
                     self.memory_y[t] = torch.cat((self.memory_y[t], y), dim=0)
                     self.memory_tid[t] = torch.cat((self.memory_tid[t], tid), dim=0)
+                    mem_diff = self.memory_x[t].size(0) - self.memory_size
+                    if mem_diff > 0:
+                        self.memory_x[t] = self.memory_x[t][mem_diff:]
+                        self.memory_y[t] = self.memory_y[t][mem_diff:]
+                        self.memory_tid[t] = self.memory_tid[t][mem_diff:]
 
             else:
                 diff = self.patterns_per_exp - tot
@@ -65,6 +76,11 @@ class GEMPlugin(BaseGEMPlugin):
                     self.memory_tid[t] = torch.cat(
                         (self.memory_tid[t], tid[:diff]), dim=0
                     )
+                    mem_diff = self.memory_x[t].size(0) - self.memory_size
+                    if mem_diff > 0:
+                        self.memory_x[t] = self.memory_x[t][mem_diff:]
+                        self.memory_y[t] = self.memory_y[t][mem_diff:]
+                        self.memory_tid[t] = self.memory_tid[t][mem_diff:]
                 break
             tot += x.size(0)
 
@@ -72,7 +88,6 @@ class GEMPlugin(BaseGEMPlugin):
         return (torch.mv(self.reference, g) < -mem_strength).any()
     
     def _solve_projection(self, g: Tensor, reference: Tensor, memory_strength: float):
-        #print("Solving projection...")
         # reference: G matrix
         memories_np = reference.cpu().double().numpy()
         gradient_np = g.cpu().contiguous().view(-1).double().numpy()
@@ -97,7 +112,7 @@ class GEMPlugin(BaseGEMPlugin):
             loss.backward()
 
             flat = [
-                (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
+                (p.grad.detach().clone().flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
                 for p in strategy.model.parameters()
             ]
             grads.append(torch.cat(flat, dim=0))

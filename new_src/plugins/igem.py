@@ -19,8 +19,12 @@ class IGEMPlugin(BaseGEMPlugin):
         memory_strength: float,
         proj_interval: int,
         proj_metric: Any,
+        n_experiences: int,
+        memory_size: int,
     ):
         super().__init__(
+            n_experiences=n_experiences,
+            memory_size=memory_size,
             memory_strength=memory_strength,
             proj_interval=proj_interval,
             patterns_per_exp=patterns_per_exp,
@@ -37,6 +41,10 @@ class IGEMPlugin(BaseGEMPlugin):
         self.GGT             = torch.empty(0)
         self.v               = None
 
+    def _reset_memory(self, strategy):
+        self.memory_x = {}
+        self.memory_y = {}
+        self.memory_tid = {}
     def _has_memory(self) -> bool:
         return bool(self.memory_x)
 
@@ -50,7 +58,7 @@ class IGEMPlugin(BaseGEMPlugin):
             loss = strategy._criterion(out, yref)
             loss.backward()
             flat = [
-                (p.grad.flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
+                (p.grad.detach().clone().flatten() if p.grad is not None else torch.zeros(p.numel(), device=strategy.device))
                 for p in strategy.model.parameters()
             ]
             G_list.append(torch.cat(flat, dim=0))
@@ -98,6 +106,9 @@ class IGEMPlugin(BaseGEMPlugin):
             v -= lr * gradF
             v = torch.max(v, z)
         g_proj = torch.mv(G.T, v) + g
+        
+        if use_warm_start:
+            self.v = v
         return g_proj.to(dev)
     
     def _update_memory(self, strategy):
@@ -120,6 +131,11 @@ class IGEMPlugin(BaseGEMPlugin):
                     self.memory_x[t] = torch.cat((self.memory_x[t], x.clone()), dim=0)
                     self.memory_y[t] = torch.cat((self.memory_y[t], y.clone()), dim=0)
                     self.memory_tid[t] = torch.cat((self.memory_tid[t], tid.clone()), dim=0)
+                    mem_diff = self.memory_x[t].size(0) - self.memory_size
+                    if mem_diff > 0:
+                        self.memory_x[t] = self.memory_x[t][mem_diff:]
+                        self.memory_y[t] = self.memory_y[t][mem_diff:]
+                        self.memory_tid[t] = self.memory_tid[t][mem_diff:]
             else:
                 diff = self.patterns_per_exp - tot
                 if t not in self.memory_x:
@@ -130,7 +146,12 @@ class IGEMPlugin(BaseGEMPlugin):
                     self.memory_x[t] = torch.cat((self.memory_x[t], x[:diff].clone()), dim=0)
                     self.memory_y[t] = torch.cat((self.memory_y[t], y[:diff].clone()), dim=0)
                     self.memory_tid[t] = torch.cat((self.memory_tid[t], tid[:diff].clone()), dim=0)
-                break  # done collecting memory for this experience
+                    mem_diff = self.memory_x[t].size(0) - self.memory_size
+                    if mem_diff > 0:
+                        self.memory_x[t] = self.memory_x[t][mem_diff:]
+                        self.memory_y[t] = self.memory_y[t][mem_diff:]
+                        self.memory_tid[t] = self.memory_tid[t][mem_diff:]
+                break  
 
             tot += bsz
 
