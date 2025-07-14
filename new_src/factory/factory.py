@@ -13,7 +13,12 @@ def make_benchmark(name: str, n_experiences: int, seed: int):
         return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
         util.init_tokenizer()
-        t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
+        # t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
+        t = make_mmlu_benchmark(
+            mmlu_root="new_src/data/agnews",  # <-- point to agnews folder
+            n_experiences=1,                  # Only one task from the two JSONs
+            seed=seed
+        )
         t.n_classes = 4
         return t
     else:

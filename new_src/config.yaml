@@ -34,7 +34,7 @@ debug:
     seed: [0, 2, 5, 7, 11]
     train_mb_size: [16]
     eval_mb_size: [50]
-    n_experiences: [5]
+    n_experiences: [1]
     train_epochs: [1]
     lr: [0.0005]
     momentum: [1.0]
