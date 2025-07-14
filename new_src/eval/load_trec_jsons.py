@@ -1,31 +1,36 @@
 from datasets import load_dataset
+from collections import defaultdict
 import json
 import os
-from collections import defaultdict
 
-output_dir = "new_src/data/agnews"
-os.makedirs(output_dir, exist_ok=True)
 
-# Load the dataset
-ds = load_dataset("SetFit/ag_news")  # returns a dict: {'train': ..., 'test': ...}
+ds = load_dataset("SetFit/trec-coarse")
 
-# We'll treat the entire dataset as one "subject" for now
-for split in ["train", "test"]:
-    data = []
-    for item in ds[split]:
-        question = item["text"]
-        label = item["label"]
-        
-        entry = {
-            "question": f"{question.strip()}\nWhich category does this belong to?",
-            "choices": ["World", "Sports", "Business", "Sci/Tech"],
-            "answer": label
-        }
-        data.append(entry)
+labels_in_data = set(example["label"] for split in ["train", "test"] for example in ds[split])
+print("Found labels:", sorted(labels_in_data))
+
+# def save_trec_to_json(output_dir="new_src/data/trec"):
+#     os.makedirs(output_dir, exist_ok=True)
+#     dataset = load_dataset("SetFit/TREC-QC")
     
-    # Save to file
-    json_path = os.path.join(output_dir, f"{split}.json")
-    with open(json_path, "w") as f:
-        json.dump(data, f, indent=2)
+#     # Manually specify the label names
+#     label_names = ["DESC", "ENTY", "ABBR", "HUM", "NUM", "LOC"]
 
-    print(f"Saved {len(data)} examples to {json_path}")
+#     # Collect examples per label
+#     per_label = defaultdict(list)
+#     for split in ["train", "test"]:
+#         for example in dataset[split]:
+#             label = example["label"]
+#             per_label[label].append({
+#                 "question": example["text"],
+#                 "choices": label_names,
+#                 "answer": label
+#             })
+
+#     for label_id, examples in per_label.items():
+#         fname = os.path.join(output_dir, f"{label_names[label_id]}.json")
+#         with open(fname, "w") as f:
+#             json.dump(examples, f, indent=2)
+#         print(f"Saved {len(examples)} examples to {fname}")
+
+# save_trec_to_json()
