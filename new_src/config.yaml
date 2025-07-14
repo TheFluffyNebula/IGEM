@@ -31,10 +31,11 @@ full:
 debug:
   global:
     proj_interval: [1]
-    seed: [0, 2, 5, 7, 11]
+    # seed: [0, 2, 5, 7, 11]
+    seed: [0, 7]
     train_mb_size: [16]
     eval_mb_size: [50]
-    n_experiences: [1]
+    n_experiences: [6]
     train_epochs: [1]
     lr: [0.0005]
     momentum: [1.0]
@@ -49,15 +50,16 @@ debug:
     gem:
       blank: [None]
     igem:
-      addons: [adaptive_lr_warm_start]
+      addons: [adaptive_lr, warm_start]
       pgd_iterations: [3]
     agem:
       sample_size: [10]
 
   benchmarks:
-    #permuted-mnist: [mlp]
+    # permuted-mnist: [mlp]
     #cifar100: [resnet18]
-    mmlu-cl: [gpt2]
+    # mmlu-cl: [gpt2]
+    trec-cl: [gpt2]
 
 # config before some edits
 # debug:

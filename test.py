@@ -57,7 +57,7 @@ eval_ds  = MMLUSingleTask(test_data,  tokenizer)
 
 # 5) Model + LoRA adapters
 from peft import LoraConfig, get_peft_model
-base = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=4)
+base = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=6)
 
 # --- WITHOUT LORA ---
 model = base

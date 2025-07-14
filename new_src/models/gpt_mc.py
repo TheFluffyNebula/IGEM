@@ -29,7 +29,7 @@ def get_gpt2_lora(**kwargs):
 
     model = GPT2ForSequenceClassification.from_pretrained(
         "gpt2",
-        num_labels=4,
+        num_labels=6,
     )
     
     tokenizer = get_tokenizer()

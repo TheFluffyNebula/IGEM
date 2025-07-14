@@ -79,13 +79,24 @@ def train_and_evaluate(
     R = np.zeros((T, T))
     results = []
     for j, train_exp in enumerate(train_stream):
+        print(f"Training experience {j}...")
         strategy.train(train_exp, eval_streams=None)
+        print(f"Finished training experience {j}. Now evaluating...")
 
         for i, test_exp in enumerate(test_stream):
             metrics = strategy.eval([test_exp])
-            #TODO: KEY DYNAMICALLY CHANGE WITH BENCHMARK
-            key = f"Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp{i:03d}"
-            R[i, j] = metrics[key]  
+            # print("KEYS:", metrics.keys())
+            possible_keys = [
+                f"Top1_Acc_Exp/eval_phase/test_stream/Task000/Exp{i:03d}",  # PMNIST
+                f"Top1_Acc_Exp/eval_phase/test_stream/Exp{i:03d}",          # TREC
+            ]
+
+            for key in possible_keys:
+                if key in metrics:
+                    R[i, j] = metrics[key]
+                    break
+            else:
+                raise KeyError(f"No known accuracy key found in metrics for test experience {i}")
             results.append(metrics)
 
     print("R matrix:\n", R)

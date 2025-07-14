@@ -1,36 +1,41 @@
 from datasets import load_dataset
-from collections import defaultdict
 import json
 import os
 
+# Load dataset
+ds = load_dataset("CogComp/trec")
+train = ds["train"].rename_column("coarse_label", "label")
+test = ds["test"].rename_column("coarse_label", "label")
 
-ds = load_dataset("SetFit/trec-coarse")
+# Combine train and test splits
+all_data = list(train) + list(test)
 
-labels_in_data = set(example["label"] for split in ["train", "test"] for example in ds[split])
-print("Found labels:", sorted(labels_in_data))
+# Class label names
+label_names = train.features["label"].names  # ['ABBR', 'ENTY', 'DESC', 'HUM', 'LOC', 'NUM']
+label_to_index = {label: idx for idx, label in enumerate(label_names)}
 
-# def save_trec_to_json(output_dir="new_src/data/trec"):
-#     os.makedirs(output_dir, exist_ok=True)
-#     dataset = load_dataset("SetFit/TREC-QC")
-    
-#     # Manually specify the label names
-#     label_names = ["DESC", "ENTY", "ABBR", "HUM", "NUM", "LOC"]
+# Group by class (for 6 JSONs, 1 per class)
+output_dir = "new_src/data/trec_coarse"
+os.makedirs(output_dir, exist_ok=True)
 
-#     # Collect examples per label
-#     per_label = defaultdict(list)
-#     for split in ["train", "test"]:
-#         for example in dataset[split]:
-#             label = example["label"]
-#             per_label[label].append({
-#                 "question": example["text"],
-#                 "choices": label_names,
-#                 "answer": label
-#             })
+examples_by_class = {label: [] for label in label_names}
 
-#     for label_id, examples in per_label.items():
-#         fname = os.path.join(output_dir, f"{label_names[label_id]}.json")
-#         with open(fname, "w") as f:
-#             json.dump(examples, f, indent=2)
-#         print(f"Saved {len(examples)} examples to {fname}")
+for item in all_data:
+    question_text = item["text"]
+    true_label = label_names[item["label"]]
+    answer_idx = label_to_index[true_label]
 
-# save_trec_to_json()
+    example = {
+        "question": question_text,
+        "choices": label_names,  # list of all 6 labels
+        "answer": answer_idx     # index into the choices list
+    }
+
+    examples_by_class[true_label].append(example)
+
+# Save one file per class (to simulate tasks)
+for label, examples in examples_by_class.items():
+    filename = os.path.join(output_dir, f"{label}.json")
+    with open(filename, "w") as f:
+        json.dump(examples, f, indent=2)
+    print(f"Wrote {len(examples)} examples to {filename}")

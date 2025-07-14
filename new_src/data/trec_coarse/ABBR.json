@@ -2,937 +2,1141 @@
   {
     "question": "What is the full form of .com ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the abbreviation AIDS stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does INRI stand for when used on Jesus ' cross ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does S.O.S. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "CNN is the abbreviation for what ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does ` PSI ' stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation for micro ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does NASDAQ stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is BPH ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation of the company name ` General Motors ' ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does G.M.T. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does SIDS stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "When reading classified ads , what does EENTY : other stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviated expression for the National Bureau of Investigation ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does NAFTA stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is the full name of the PLO ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the word LASER mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does NN O `` mean when used as a prefix in Irish surnames ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does Ms. , Miss , and Mrs. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the abbreviation cwt. ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What do the letters ZIP stand for in the phrase `` ZIP code '' ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What do the letters D.C. stand for in Washington , D.C. ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does e.g. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does IBM stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does U.S.S.R. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does NECROSIS mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation of General Motors ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does CNN stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What 's the abbreviation for trinitrotoluene ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What is IOC an abbreviation of ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviated form of the National Bureau of Investigation ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does the `` c '' stand for in the equation E=mc2 ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is a `` USB '' port on a computer ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does LOL mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does IOC stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the acronym for the National Bureau of Investigation ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviated term used for the National Bureau of Investigation ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What is RCD ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does SHIELD stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What 's the abbreviation for limited partnership ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does the abbreviation IOC stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation of the National Bureau of Investigation ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What is HTML ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does A&W of root beer fame stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is AFS ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is DEET ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is DTMF ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does JESSICA mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does MSG stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the E stand for in the equation E=mc2 ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does VCR stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the channel ESPN stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "CNN is an acronym for what ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does NASA stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What does the number `` 5 '' stand for on FUBU clothing ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does BTU mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "In a computer , what does SCSI mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the abbreviation OAS stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does HIV stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is HDLC ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation for Original Equipment Manufacturer ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does snafu stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the T.S. stand for in T.S. Eliot 's name ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does IQ stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is RAM in the computer ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is SVHS ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is SAP ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What do the letters CE stand for on so many products , particularly electrical , purchased now ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the correct way to abbreviate cc. at the bottom of a business letter ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does BMW stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is LMDS ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does `` B.Y.O.B. '' mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the acronym CPR mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does RCA stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation of the International Olympic Committee ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "What is Mikhail Gorbachev 's middle initial ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does the `` blue ribbon '' stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does R.E.M. stand for , as in the rock group R.E.M. ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does pH stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does BUD stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "CPR is the abbreviation for what ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does EKG stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is p.m. an abbreviation for , as in 5 p.m. ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does CPR stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the acronym for the rating system for air conditioner efficiency ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What is DSL ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
+  },
+  {
+    "question": "What is the abbreviation for Texas ?",
+    "choices": [
+      "ABBR",
+      "ENTY",
+      "DESC",
+      "HUM",
+      "LOC",
+      "NUM"
+    ],
+    "answer": 0
   },
   {
     "question": "What does I.V. stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does USPS stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What is TMJ ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the technical term ISDN mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does CPR stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the acronym NASA stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does NASA stand for ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   },
   {
     "question": "What does the abbreviation SOS mean ?",
     "choices": [
-      "DESC",
-      "ENTY",
       "ABBR",
+      "ENTY",
+      "DESC",
       "HUM",
-      "NUM",
-      "LOC"
+      "LOC",
+      "NUM"
     ],
-    "answer": 3
+    "answer": 0
   }
 ]

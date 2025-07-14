@@ -12,13 +12,14 @@ def make_benchmark(name: str, n_experiences: int, seed: int):
     elif name == "cifar100":
         return SplitCIFAR100(n_experiences=n_experiences, seed=seed)
     elif name == "mmlu-cl":
-        # util.init_tokenizer()
-        # t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
-        # t.n_classes = 4
-        # return t
+        util.init_tokenizer()
+        t =make_mmlu_benchmark(mmlu_root="new_src/data/mmlu", n_experiences=n_experiences, seed=seed)
+        t.n_classes = 4
+        return t
+    elif name == "trec-cl":
         util.init_tokenizer()
         t = make_mmlu_benchmark(
-            mmlu_root="new_src/data/trec",
+            mmlu_root="new_src/data/trec_coarse",
             n_experiences=n_experiences,  # likely 6
             seed=seed
         )
