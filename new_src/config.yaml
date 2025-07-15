@@ -31,11 +31,10 @@ full:
 debug:
   global:
     proj_interval: [1]
-    # seed: [0, 2, 5, 7, 11]
-    seed: [0, 7]
+    seed: [0, 2, 5, 7, 11]
     train_mb_size: [16]
     eval_mb_size: [50]
-    n_experiences: [6]
+    n_experiences: [3]
     train_epochs: [1]
     lr: [0.0005]
     momentum: [1.0]
@@ -58,35 +57,36 @@ debug:
   benchmarks:
     # permuted-mnist: [mlp]
     #cifar100: [resnet18]
-    # mmlu-cl: [gpt2]
-    trec-cl: [gpt2]
+    mmlu-cl: [gpt2]
+    #trec-cl: [gpt2]
 
-# config before some edits
+# trec-cl
 # debug:
 #   global:
 #     proj_interval: [1]
-#     seed: [0]
-#     train_mb_size: [5]
-#     eval_mb_size: [5]
-#     n_experiences: [3]
+#     # seed: [0, 2, 5, 7, 11]
+#     seed: [0, 7]
+#     train_mb_size: [16]
+#     eval_mb_size: [50]
+#     n_experiences: [6]
 #     train_epochs: [1]
-#     lr: [0.0001]
-#     momentum: [0.0]
-#     patterns_per_exp: [200]
-#     memory_strength: [0.1]
+#     lr: [0.0005]
+#     momentum: [1.0]
+#     patterns_per_exp: [50]
+#     memory_strength: [0.5]
 #     output_dir: ['./new_results/debug/']
 #     cuda: [0]
+#     memory_size: [600]
+
   
 #   plugins:
-#     # gem: 
-#     #   memory_size: [200]
+#     gem:
+#       blank: [None]
 #     igem:
 #       addons: [adaptive_lr, warm_start]
-#       pgd_iterations: [1]
+#       pgd_iterations: [3]
 #     agem:
-#       sample_size: [1]
+#       sample_size: [10]
 
 #   benchmarks:
-#     #permuted-mnist: [mlp]
-#     # cifar100: [resnet18]
-#     mmlu-cl: [gpt2]
+#     trec-cl: [gpt2]

@@ -29,13 +29,13 @@ def get_gpt2_lora(**kwargs):
 
     model = GPT2ForSequenceClassification.from_pretrained(
         "gpt2",
-        num_labels=6,
+        num_labels=4,
     )
     
     tokenizer = get_tokenizer()
 
     lora_config = LoraConfig(
-        r=16,
+        r=8,
         lora_alpha=32,
         lora_dropout=0.05,
         target_modules=["c_attn", "c_proj"],

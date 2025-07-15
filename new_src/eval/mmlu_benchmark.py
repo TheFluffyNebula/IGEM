@@ -61,6 +61,8 @@ def make_mmlu_benchmark(mmlu_root: str,n_experiences, seed: int):
     test_datasets = []
     task_labels = []
 
+    all_files = all_files[::-1]
+
     for task_id, fname in enumerate(all_files[:n_experiences]):
         with open(os.path.join(mmlu_root, fname)) as f:
             data = json.load(f)
