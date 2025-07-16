@@ -36,13 +36,13 @@ debug:
     eval_mb_size: [50]
     n_experiences: [3]
     train_epochs: [1]
-    lr: [0.0005]
+    lr: [0.005]
     momentum: [1.0]
     patterns_per_exp: [200]
     memory_strength: [0.5]
     output_dir: ['./new_results/debug/']
     cuda: [0]
-    memory_size: [600]
+    memory_size: [150]
 
   
   plugins:
@@ -53,6 +53,8 @@ debug:
       pgd_iterations: [3]
     agem:
       sample_size: [10]
+    # olora:
+    #   blank: [None]
 
   benchmarks:
     # permuted-mnist: [mlp]

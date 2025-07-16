@@ -69,10 +69,10 @@ def make_mmlu_benchmark(mmlu_root: str,n_experiences, seed: int):
         split_idx = int(0.8 * len(data))
         train_data = data[:split_idx]
         test_data = data[split_idx:]
-        print("Data LEngth:", len(data))
+        # print("Data LEngth:", len(data))
         train_dataset = make_task_dataset(train_data, tokenizer, task_id)
         test_dataset =  make_task_dataset(test_data, tokenizer, task_id)
-        print("Train and test len:", len(train_dataset), len(test_dataset))
+        # print("Train and test len:", len(train_dataset), len(test_dataset))
         train_datasets.append(train_dataset)
         test_datasets.append(test_dataset)
 
