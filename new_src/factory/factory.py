@@ -3,7 +3,7 @@ from avalanche.benchmarks.classic import PermutedMNIST, SplitCIFAR100
 from avalanche.models import SimpleMLP, SlimResNet18
 from plugins import AGEMPlugin, GEMPlugin, IGEMPlugin
 from eval.mmlu_benchmark import make_mmlu_benchmark
-from models.gpt_mc import get_gpt2_lora
+from models.gpt_mc import get_gpt2_lora, get_gpt2_full_finetune
 import util
 
 def make_benchmark(name: str, n_experiences: int, seed: int):
@@ -35,6 +35,7 @@ def make_model(name: str, **kwargs):
         factory = SlimResNet18
     elif name == "gpt2":
         factory = get_gpt2_lora
+        # factory = get_gpt2_full_finetune
     else:
         raise ValueError(f"Unknown model name: {name}")
 

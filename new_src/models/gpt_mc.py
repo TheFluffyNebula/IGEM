@@ -51,15 +51,23 @@ def get_gpt2_lora(**kwargs):
     for name, param in model.named_parameters():
         if name.startswith("base_model.model.score"):
             param.requires_grad = True
-    layers_to_keep = { 10,11}
+    layers_to_keep = { 10,11 }
+    # layers_to_keep = set(range(6, 12))
 
+    # specific layers
+    # for name, p in model.named_parameters():
+    #     if "lora_A" in name or "lora_B" in name:
+    #         layer_idx = int(name.split(".")[4])
+    #         if layer_idx not in layers_to_keep:
+    #             p.requires_grad = False
+    #     if p.requires_grad:
+    #         print(name)
+
+    # all lora layers
     for name, p in model.named_parameters():
         if "lora_A" in name or "lora_B" in name:
-            layer_idx = int(name.split(".")[4])
-            if layer_idx not in layers_to_keep:
-                p.requires_grad = False
-        if p.requires_grad:
-            print(name)
+            p.requires_grad = True
+
     cnt = sum([p.numel() for _, p in model.named_parameters() if p.requires_grad])
     n_tensors = sum(1 for p in model.parameters() if p.requires_grad)
     n_scalars = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -67,3 +75,30 @@ def get_gpt2_lora(**kwargs):
     print("Trainable scalars:", n_scalars)
     # Wrap the model before returning
     return HuggingFaceWrapper(model,tokenizer).to(device)
+
+def get_gpt2_full_finetune(**kwargs):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    model = GPT2ForSequenceClassification.from_pretrained(
+        "gpt2",
+        num_labels=4,
+    )
+    
+    tokenizer = get_tokenizer()
+    tokenizer.pad_token = "[PAD]"
+    model.resize_token_embeddings(len(tokenizer))
+    model.config.pad_token_id = tokenizer.pad_token_id
+    model.config.attn_pdrop = 0.0
+    model.config.resid_pdrop = 0.0
+
+    # ✅ Unfreeze all params
+    for p in model.parameters():
+        p.requires_grad = True
+
+    # Sanity check
+    n_tensors = sum(1 for p in model.parameters() if p.requires_grad)
+    n_scalars = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print("Trainable tensors:", n_tensors)
+    print("Trainable scalars:", n_scalars)
+
+    return HuggingFaceWrapper(model, tokenizer).to(device)

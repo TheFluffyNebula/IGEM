@@ -3,181 +3,385 @@
 -- Starting eval on experience 0 from train stream --
 > Eval on experience 0 from train stream ended.
 	Loss_Exp/eval_phase/train_stream/Exp000 = 2.9480
-	Time_Exp/eval_phase/train_stream/Exp000 = 0.4582
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.5968
 	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.1691
 -- >> End of eval phase << --
 	Loss_Stream/eval_phase/train_stream = 2.9480
-	Time_Stream/eval_phase/train_stream = 0.4602
+	Time_Stream/eval_phase/train_stream = 0.5988
 	Top1_Acc_Stream/eval_phase/train_stream = 0.1691
 -- Starting training on experience 0 from train stream --
 Epoch 0 ended.
-	Loss_Epoch/train_phase/train_stream = 1.8095
-	Loss_MB/train_phase/train_stream = 1.0923
-	Time_Epoch/train_phase/train_stream = 0.6330
-	Time_MB/train_phase/train_stream = 0.0412
-	Top1_Acc_Epoch/train_phase/train_stream = 0.3088
+	Loss_Epoch/train_phase/train_stream = 1.9079
+	Loss_MB/train_phase/train_stream = 1.6142
+	Time_Epoch/train_phase/train_stream = 1.3937
+	Time_MB/train_phase/train_stream = 0.0899
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2794
+	Top1_Acc_MB/train_phase/train_stream = 0.2500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.7192
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.6131
+	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.2132
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.7192
+	Time_Stream/eval_phase/train_stream = 0.6155
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2132
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream = 1.6091
+	Loss_MB/train_phase/train_stream = 1.3054
+	Time_Epoch/train_phase/train_stream = 1.3931
+	Time_MB/train_phase/train_stream = 0.0885
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2794
+	Top1_Acc_MB/train_phase/train_stream = 0.2500
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.3667
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.6093
+	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.3529
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3667
+	Time_Stream/eval_phase/train_stream = 0.6121
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3529
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3828
+	Loss_MB/train_phase/train_stream = 1.3899
+	Time_Epoch/train_phase/train_stream = 1.3935
+	Time_MB/train_phase/train_stream = 0.0909
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2647
 	Top1_Acc_MB/train_phase/train_stream = 0.3750
 -- >> Start of eval phase << --
 -- Starting eval on experience 0 from train stream --
 > Eval on experience 0 from train stream ended.
-	Loss_Exp/eval_phase/train_stream/Exp000 = 1.8751
-	Time_Exp/eval_phase/train_stream/Exp000 = 0.4777
-	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.3382
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.3868
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.5898
+	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.2059
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/train_stream = 1.8751
-	Time_Stream/eval_phase/train_stream = 0.4798
-	Top1_Acc_Stream/eval_phase/train_stream = 0.3382
+	Loss_Stream/eval_phase/train_stream = 1.3868
+	Time_Stream/eval_phase/train_stream = 0.5925
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2059
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3800
+	Loss_MB/train_phase/train_stream = 1.4067
+	Time_Epoch/train_phase/train_stream = 1.2307
+	Time_MB/train_phase/train_stream = 0.0773
+	Top1_Acc_Epoch/train_phase/train_stream = 0.1985
+	Top1_Acc_MB/train_phase/train_stream = 0.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.3650
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.5448
+	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.3162
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3650
+	Time_Stream/eval_phase/train_stream = 0.5475
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3162
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3495
+	Loss_MB/train_phase/train_stream = 1.2763
+	Time_Epoch/train_phase/train_stream = 1.2263
+	Time_MB/train_phase/train_stream = 0.0780
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2868
+	Top1_Acc_MB/train_phase/train_stream = 0.3750
+-- >> Start of eval phase << --
+-- Starting eval on experience 0 from train stream --
+> Eval on experience 0 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp000 = 1.3721
+	Time_Exp/eval_phase/train_stream/Exp000 = 0.5418
+	Top1_Acc_Exp/eval_phase/train_stream/Exp000 = 0.3456
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3721
+	Time_Stream/eval_phase/train_stream = 0.5444
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3456
 -- >> End of training phase << --
 -- >> Start of eval phase << --
 -- Starting eval on experience 0 from test stream --
 > Eval on experience 0 from test stream ended.
-	<eval.metrics.ProjectionOverheadMetric object at 0x7fd144aa89a0>/train_phase/train_stream/Exp000 = 0.0000
-	Loss_Exp/eval_phase/test_stream/Exp000 = 2.1663
-	Time_Exp/eval_phase/test_stream/Exp000 = 0.1198
-	Top1_Acc_Exp/eval_phase/test_stream/Exp000 = 0.1714
+	<eval.metrics.ProjectionOverheadMetric object at 0x7fe5582da770>/train_phase/train_stream/Exp000 = 0.0000
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.4108
+	Time_Exp/eval_phase/test_stream/Exp000 = 0.1385
+	Top1_Acc_Exp/eval_phase/test_stream/Exp000 = 0.2000
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 2.1663
-	Time_Stream/eval_phase/test_stream = 0.1222
-	Top1_Acc_Stream/eval_phase/test_stream = 0.1714
+	Loss_Stream/eval_phase/test_stream = 1.4108
+	Time_Stream/eval_phase/test_stream = 0.1410
+	Top1_Acc_Stream/eval_phase/test_stream = 0.2000
 -- >> Start of eval phase << --
 -- Starting eval on experience 1 from test stream --
 > Eval on experience 1 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp001 = 1.9320
-	Time_Exp/eval_phase/test_stream/Exp001 = 0.1189
+	Loss_Exp/eval_phase/test_stream/Exp001 = 1.4354
+	Time_Exp/eval_phase/test_stream/Exp001 = 0.1387
 	Top1_Acc_Exp/eval_phase/test_stream/Exp001 = 0.3529
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.9320
-	Time_Stream/eval_phase/test_stream = 0.1211
+	Loss_Stream/eval_phase/test_stream = 1.4354
+	Time_Stream/eval_phase/test_stream = 0.1412
 	Top1_Acc_Stream/eval_phase/test_stream = 0.3529
 -- >> Start of eval phase << --
 -- Starting eval on experience 2 from test stream --
 > Eval on experience 2 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp002 = 2.3654
-	Time_Exp/eval_phase/test_stream/Exp002 = 0.0703
+	Loss_Exp/eval_phase/test_stream/Exp002 = 1.3165
+	Time_Exp/eval_phase/test_stream/Exp002 = 0.0793
 	Top1_Acc_Exp/eval_phase/test_stream/Exp002 = 0.3500
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 2.3654
-	Time_Stream/eval_phase/test_stream = 0.0727
+	Loss_Stream/eval_phase/test_stream = 1.3165
+	Time_Stream/eval_phase/test_stream = 0.0817
 	Top1_Acc_Stream/eval_phase/test_stream = 0.3500
 -- >> Start of training phase << --
 -- >> Start of eval phase << --
 -- Starting eval on experience 1 from train stream --
 > Eval on experience 1 from train stream ended.
-	Loss_Exp/eval_phase/train_stream/Exp001 = 1.8281
-	Time_Exp/eval_phase/train_stream/Exp001 = 0.4624
-	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.2803
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.4437
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5208
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.2652
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/train_stream = 1.8281
-	Time_Stream/eval_phase/train_stream = 0.4645
-	Top1_Acc_Stream/eval_phase/train_stream = 0.2803
+	Loss_Stream/eval_phase/train_stream = 1.4437
+	Time_Stream/eval_phase/train_stream = 0.5230
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2652
 -- Starting training on experience 1 from train stream --
 Epoch 0 ended.
-	Loss_Epoch/train_phase/train_stream = 1.4995
-	Loss_MB/train_phase/train_stream = 1.8793
-	Time_Epoch/train_phase/train_stream = 1.0590
-	Time_MB/train_phase/train_stream = 0.0565
+	Loss_Epoch/train_phase/train_stream = 1.4497
+	Loss_MB/train_phase/train_stream = 1.3612
+	Time_Epoch/train_phase/train_stream = 1.6941
+	Time_MB/train_phase/train_stream = 0.1073
 	Top1_Acc_Epoch/train_phase/train_stream = 0.2500
+	Top1_Acc_MB/train_phase/train_stream = 0.2500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.4143
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5218
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.2652
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.4143
+	Time_Stream/eval_phase/train_stream = 0.5244
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2652
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3742
+	Loss_MB/train_phase/train_stream = 1.3470
+	Time_Epoch/train_phase/train_stream = 1.9096
+	Time_MB/train_phase/train_stream = 0.1237
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2576
+	Top1_Acc_MB/train_phase/train_stream = 0.5000
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.3695
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5804
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.2652
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3695
+	Time_Stream/eval_phase/train_stream = 0.5829
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2652
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3717
+	Loss_MB/train_phase/train_stream = 1.5142
+	Time_Epoch/train_phase/train_stream = 1.9177
+	Time_MB/train_phase/train_stream = 0.1251
+	Top1_Acc_Epoch/train_phase/train_stream = 0.3333
 	Top1_Acc_MB/train_phase/train_stream = 0.0000
 -- >> Start of eval phase << --
 -- Starting eval on experience 1 from train stream --
 > Eval on experience 1 from train stream ended.
-	Loss_Exp/eval_phase/train_stream/Exp001 = 1.4522
-	Time_Exp/eval_phase/train_stream/Exp001 = 0.4656
-	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.2273
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.3609
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5833
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.3333
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/train_stream = 1.4522
-	Time_Stream/eval_phase/train_stream = 0.4680
-	Top1_Acc_Stream/eval_phase/train_stream = 0.2273
+	Loss_Stream/eval_phase/train_stream = 1.3609
+	Time_Stream/eval_phase/train_stream = 0.5856
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3333
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3661
+	Loss_MB/train_phase/train_stream = 1.3402
+	Time_Epoch/train_phase/train_stream = 1.9162
+	Time_MB/train_phase/train_stream = 0.1256
+	Top1_Acc_Epoch/train_phase/train_stream = 0.3258
+	Top1_Acc_MB/train_phase/train_stream = 0.2500
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.3585
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5816
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.3333
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3585
+	Time_Stream/eval_phase/train_stream = 0.5841
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3333
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3609
+	Loss_MB/train_phase/train_stream = 1.4437
+	Time_Epoch/train_phase/train_stream = 1.9165
+	Time_MB/train_phase/train_stream = 0.1240
+	Top1_Acc_Epoch/train_phase/train_stream = 0.3333
+	Top1_Acc_MB/train_phase/train_stream = 0.0000
+-- >> Start of eval phase << --
+-- Starting eval on experience 1 from train stream --
+> Eval on experience 1 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp001 = 1.3595
+	Time_Exp/eval_phase/train_stream/Exp001 = 0.5826
+	Top1_Acc_Exp/eval_phase/train_stream/Exp001 = 0.3333
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3595
+	Time_Stream/eval_phase/train_stream = 0.5852
+	Top1_Acc_Stream/eval_phase/train_stream = 0.3333
 -- >> End of training phase << --
 -- >> Start of eval phase << --
 -- Starting eval on experience 0 from test stream --
 > Eval on experience 0 from test stream ended.
-	<eval.metrics.ProjectionOverheadMetric object at 0x7fd144aa89a0>/train_phase/train_stream/Exp001 = 0.0000
-	Loss_Exp/eval_phase/test_stream/Exp000 = 1.3794
-	Time_Exp/eval_phase/test_stream/Exp000 = 0.1222
-	Top1_Acc_Exp/eval_phase/test_stream/Exp000 = 0.3714
+	<eval.metrics.ProjectionOverheadMetric object at 0x7fe5582da770>/train_phase/train_stream/Exp001 = 0.0016
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.4335
+	Time_Exp/eval_phase/test_stream/Exp000 = 0.1579
+	Top1_Acc_Exp/eval_phase/test_stream/Exp000 = 0.2286
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.3794
-	Time_Stream/eval_phase/test_stream = 0.1244
-	Top1_Acc_Stream/eval_phase/test_stream = 0.3714
+	Loss_Stream/eval_phase/test_stream = 1.4335
+	Time_Stream/eval_phase/test_stream = 0.1608
+	Top1_Acc_Stream/eval_phase/test_stream = 0.2286
 -- >> Start of eval phase << --
 -- Starting eval on experience 1 from test stream --
 > Eval on experience 1 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp001 = 1.6233
-	Time_Exp/eval_phase/test_stream/Exp001 = 0.1199
-	Top1_Acc_Exp/eval_phase/test_stream/Exp001 = 0.1176
+	Loss_Exp/eval_phase/test_stream/Exp001 = 1.3763
+	Time_Exp/eval_phase/test_stream/Exp001 = 0.1577
+	Top1_Acc_Exp/eval_phase/test_stream/Exp001 = 0.2647
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.6233
-	Time_Stream/eval_phase/test_stream = 0.1221
-	Top1_Acc_Stream/eval_phase/test_stream = 0.1176
+	Loss_Stream/eval_phase/test_stream = 1.3763
+	Time_Stream/eval_phase/test_stream = 0.1604
+	Top1_Acc_Stream/eval_phase/test_stream = 0.2647
 -- >> Start of eval phase << --
 -- Starting eval on experience 2 from test stream --
 > Eval on experience 2 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp002 = 1.6148
-	Time_Exp/eval_phase/test_stream/Exp002 = 0.0704
-	Top1_Acc_Exp/eval_phase/test_stream/Exp002 = 0.3000
+	Loss_Exp/eval_phase/test_stream/Exp002 = 1.4852
+	Time_Exp/eval_phase/test_stream/Exp002 = 0.0907
+	Top1_Acc_Exp/eval_phase/test_stream/Exp002 = 0.0500
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.6148
-	Time_Stream/eval_phase/test_stream = 0.0728
-	Top1_Acc_Stream/eval_phase/test_stream = 0.3000
+	Loss_Stream/eval_phase/test_stream = 1.4852
+	Time_Stream/eval_phase/test_stream = 0.0935
+	Top1_Acc_Stream/eval_phase/test_stream = 0.0500
 -- >> Start of training phase << --
 -- >> Start of eval phase << --
 -- Starting eval on experience 2 from train stream --
 > Eval on experience 2 from train stream ended.
-	Loss_Exp/eval_phase/train_stream/Exp002 = 1.5112
-	Time_Exp/eval_phase/train_stream/Exp002 = 0.2755
-	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2375
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.4167
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3531
+	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2500
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/train_stream = 1.5112
-	Time_Stream/eval_phase/train_stream = 0.2775
-	Top1_Acc_Stream/eval_phase/train_stream = 0.2375
+	Loss_Stream/eval_phase/train_stream = 1.4167
+	Time_Stream/eval_phase/train_stream = 0.3555
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2500
 -- Starting training on experience 2 from train stream --
 Epoch 0 ended.
-	Loss_Epoch/train_phase/train_stream = 1.4718
-	Loss_MB/train_phase/train_stream = 1.4252
-	Time_Epoch/train_phase/train_stream = 0.8425
-	Time_MB/train_phase/train_stream = 0.1485
-	Top1_Acc_Epoch/train_phase/train_stream = 0.2000
+	Loss_Epoch/train_phase/train_stream = 1.4091
+	Loss_MB/train_phase/train_stream = 1.4086
+	Time_Epoch/train_phase/train_stream = 1.4634
+	Time_MB/train_phase/train_stream = 0.3073
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2500
+	Top1_Acc_MB/train_phase/train_stream = 0.3125
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.4098
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3551
+	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2500
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.4098
+	Time_Stream/eval_phase/train_stream = 0.3577
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2500
+Epoch 1 ended.
+	Loss_Epoch/train_phase/train_stream = 1.4062
+	Loss_MB/train_phase/train_stream = 1.4222
+	Time_Epoch/train_phase/train_stream = 1.4698
+	Time_MB/train_phase/train_stream = 0.3081
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2375
 	Top1_Acc_MB/train_phase/train_stream = 0.1875
 -- >> Start of eval phase << --
 -- Starting eval on experience 2 from train stream --
 > Eval on experience 2 from train stream ended.
-	Loss_Exp/eval_phase/train_stream/Exp002 = 1.4307
-	Time_Exp/eval_phase/train_stream/Exp002 = 0.2813
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.4003
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3546
+	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2375
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.4003
+	Time_Stream/eval_phase/train_stream = 0.3573
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2375
+Epoch 2 ended.
+	Loss_Epoch/train_phase/train_stream = 1.4049
+	Loss_MB/train_phase/train_stream = 1.3951
+	Time_Epoch/train_phase/train_stream = 1.4654
+	Time_MB/train_phase/train_stream = 0.3025
+	Top1_Acc_Epoch/train_phase/train_stream = 0.1625
+	Top1_Acc_MB/train_phase/train_stream = 0.1875
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.3917
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3586
 	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2625
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/train_stream = 1.4307
-	Time_Stream/eval_phase/train_stream = 0.2836
+	Loss_Stream/eval_phase/train_stream = 1.3917
+	Time_Stream/eval_phase/train_stream = 0.3612
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2625
+Epoch 3 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3903
+	Loss_MB/train_phase/train_stream = 1.3598
+	Time_Epoch/train_phase/train_stream = 1.4376
+	Time_MB/train_phase/train_stream = 0.2682
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2500
+	Top1_Acc_MB/train_phase/train_stream = 0.3750
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.3884
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3239
+	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2625
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3884
+	Time_Stream/eval_phase/train_stream = 0.3265
+	Top1_Acc_Stream/eval_phase/train_stream = 0.2625
+Epoch 4 ended.
+	Loss_Epoch/train_phase/train_stream = 1.3909
+	Loss_MB/train_phase/train_stream = 1.3720
+	Time_Epoch/train_phase/train_stream = 1.2947
+	Time_MB/train_phase/train_stream = 0.2696
+	Top1_Acc_Epoch/train_phase/train_stream = 0.2625
+	Top1_Acc_MB/train_phase/train_stream = 0.3125
+-- >> Start of eval phase << --
+-- Starting eval on experience 2 from train stream --
+> Eval on experience 2 from train stream ended.
+	Loss_Exp/eval_phase/train_stream/Exp002 = 1.3898
+	Time_Exp/eval_phase/train_stream/Exp002 = 0.3145
+	Top1_Acc_Exp/eval_phase/train_stream/Exp002 = 0.2625
+-- >> End of eval phase << --
+	Loss_Stream/eval_phase/train_stream = 1.3898
+	Time_Stream/eval_phase/train_stream = 0.3171
 	Top1_Acc_Stream/eval_phase/train_stream = 0.2625
 -- >> End of training phase << --
 -- >> Start of eval phase << --
 -- Starting eval on experience 0 from test stream --
 > Eval on experience 0 from test stream ended.
-	<eval.metrics.ProjectionOverheadMetric object at 0x7fd144aa89a0>/train_phase/train_stream/Exp002 = 0.0000
-	Loss_Exp/eval_phase/test_stream/Exp000 = 1.4633
-	Time_Exp/eval_phase/test_stream/Exp000 = 0.1218
+	<eval.metrics.ProjectionOverheadMetric object at 0x7fe5582da770>/train_phase/train_stream/Exp002 = 0.0000
+	Loss_Exp/eval_phase/test_stream/Exp000 = 1.3934
+	Time_Exp/eval_phase/test_stream/Exp000 = 0.1382
 	Top1_Acc_Exp/eval_phase/test_stream/Exp000 = 0.2000
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.4633
-	Time_Stream/eval_phase/test_stream = 0.1240
+	Loss_Stream/eval_phase/test_stream = 1.3934
+	Time_Stream/eval_phase/test_stream = 0.1407
 	Top1_Acc_Stream/eval_phase/test_stream = 0.2000
 -- >> Start of eval phase << --
 -- Starting eval on experience 1 from test stream --
 > Eval on experience 1 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp001 = 1.3887
-	Time_Exp/eval_phase/test_stream/Exp001 = 0.1193
+	Loss_Exp/eval_phase/test_stream/Exp001 = 1.3790
+	Time_Exp/eval_phase/test_stream/Exp001 = 0.1363
 	Top1_Acc_Exp/eval_phase/test_stream/Exp001 = 0.3529
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.3887
-	Time_Stream/eval_phase/test_stream = 0.1217
+	Loss_Stream/eval_phase/test_stream = 1.3790
+	Time_Stream/eval_phase/test_stream = 0.1393
 	Top1_Acc_Stream/eval_phase/test_stream = 0.3529
 -- >> Start of eval phase << --
 -- Starting eval on experience 2 from test stream --
 > Eval on experience 2 from test stream ended.
-	Loss_Exp/eval_phase/test_stream/Exp002 = 1.3413
-	Time_Exp/eval_phase/test_stream/Exp002 = 0.0704
+	Loss_Exp/eval_phase/test_stream/Exp002 = 1.3647
+	Time_Exp/eval_phase/test_stream/Exp002 = 0.0806
 	Top1_Acc_Exp/eval_phase/test_stream/Exp002 = 0.3500
 -- >> End of eval phase << --
-	Loss_Stream/eval_phase/test_stream = 1.3413
-	Time_Stream/eval_phase/test_stream = 0.0725
+	Loss_Stream/eval_phase/test_stream = 1.3647
+	Time_Stream/eval_phase/test_stream = 0.0832
 	Top1_Acc_Stream/eval_phase/test_stream = 0.3500

@@ -32,16 +32,16 @@ debug:
   global:
     proj_interval: [1]
     seed: [0, 2, 5, 7, 11]
-    train_mb_size: [16]
+    train_mb_size: [32]
     eval_mb_size: [50]
     n_experiences: [3]
-    train_epochs: [1]
-    lr: [0.005]
-    momentum: [1.0]
+    train_epochs: [5]
+    lr: [0.001]
+    momentum: [0.9]
     patterns_per_exp: [200]
-    memory_strength: [0.5]
+    memory_strength: [0.3]
     output_dir: ['./new_results/debug/']
-    cuda: [0]
+    cuda: [1]
     memory_size: [150]
 
   
@@ -53,7 +53,7 @@ debug:
       pgd_iterations: [3]
     agem:
       sample_size: [10]
-    # olora:
+    # naive:
     #   blank: [None]
 
   benchmarks:

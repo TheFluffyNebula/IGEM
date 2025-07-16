@@ -40,6 +40,7 @@ def make_task_dataset(data, tokenizer, task_id, max_length=512):
 
     y = torch.tensor(labels, dtype=torch.long)    # [N]
     t = torch.full((len(labels),), task_id, dtype=torch.long)
+    # print(f"[Task {task_id}] Unique labels in train dataset:", torch.unique(y))
 
     # Avalanche will see samples as (X[i], y[i], t[i])
     #return AvalancheDataset(TensorDataset(X, y))

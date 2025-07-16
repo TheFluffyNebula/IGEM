@@ -63,20 +63,39 @@ class Runner:
             weight_decay=1e-2
         )
         proj_metric = ProjectionOverheadMetric()
-        plugin = make_plugin(
-            plugin_name=self.plugin,
-            patterns_per_exp=self.patterns_per_exp,
-            n_experiences=self.n_experiences,
-            memory_size=self.memory_size,
-            memory_strength=self.memory_strength,
-            proj_interval=self.proj_interval,
-            pgd_iterations = getattr(self, "pgd_iterations", 3),
-            adaptive_lr= self.adaptive_lr,#getattr(self, "addons", False) and "adaptive_lr" in self.addons,
-            warm_start= self.warm_start,#getattr(self, "addons", False) and "warm_start" in self.addons,
-            lr=self.lr,
-            sample_size=getattr(self, "sample_size", 1),
-            proj_metric=proj_metric
-        )
+        # plugin = make_plugin(
+        #     plugin_name=self.plugin,
+        #     patterns_per_exp=self.patterns_per_exp,
+        #     n_experiences=self.n_experiences,
+        #     memory_size=self.memory_size,
+        #     memory_strength=self.memory_strength,
+        #     proj_interval=self.proj_interval,
+        #     pgd_iterations = getattr(self, "pgd_iterations", 3),
+        #     adaptive_lr= self.adaptive_lr,#getattr(self, "addons", False) and "adaptive_lr" in self.addons,
+        #     warm_start= self.warm_start,#getattr(self, "addons", False) and "warm_start" in self.addons,
+        #     lr=self.lr,
+        #     sample_size=getattr(self, "sample_size", 1),
+        #     proj_metric=proj_metric
+        # )
+
+        if self.plugin == "naive":
+            plugin_list = []
+        else:
+            plugin = make_plugin(
+                plugin_name=self.plugin,
+                patterns_per_exp=self.patterns_per_exp,
+                n_experiences=self.n_experiences,
+                memory_size=self.memory_size,
+                memory_strength=self.memory_strength,
+                proj_interval=self.proj_interval,
+                pgd_iterations=getattr(self, "pgd_iterations", 3),
+                adaptive_lr=self.adaptive_lr,
+                warm_start=self.warm_start,
+                lr=self.lr,
+                sample_size=getattr(self, "sample_size", 1),
+                proj_metric=proj_metric
+            )
+            plugin_list = [plugin]
         
         criterion = torch.nn.CrossEntropyLoss()
         self.strategy = Naive(
@@ -93,7 +112,7 @@ class Runner:
             proj_metric=proj_metric
         ),
             eval_every=1,
-            plugins=[plugin]
+            plugins=plugin_list
         )
 
     def run(self):
